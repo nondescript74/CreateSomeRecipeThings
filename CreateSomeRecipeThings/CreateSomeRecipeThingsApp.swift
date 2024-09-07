@@ -11,7 +11,7 @@ import SwiftUI
 struct CreateSomeRecipeThingsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CreateSomethingView(someenum: .metric, recipeuuid: UUID(), payload: Length(number: 100, unit: "milliliters"))
         }
     }
 }

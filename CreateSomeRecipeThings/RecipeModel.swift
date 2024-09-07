@@ -31,6 +31,7 @@ struct Arecipe {
     let instructions: String
     let analyzedInstructions: [AnalyzedInstruction]
     let sourceName, creditsText, originalID: NSNull
+    let recipeUUID: UUID?
 }
 
 // MARK: - AnalyzedInstruction

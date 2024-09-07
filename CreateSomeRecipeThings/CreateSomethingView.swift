@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CreateSomethingView: View {
     
-    init (someenum: SomeEnum, payload: Any) {
+    init (someenum: SomeEnum, recipeuuid: UUID, payload: Any) {
         self.someVariable = someenum
         self.somePayload = payload
+        self.myrecipeUUID = recipeuuid
     }
     
     enum SomeEnum {
@@ -28,14 +29,22 @@ struct CreateSomethingView: View {
     
     fileprivate var someVariable: SomeEnum = .metric
     fileprivate var somePayload: Any = Length(number: 1, unit: "meter")
+    fileprivate var myrecipeUUID: UUID
     
     var body: some View {
-        Text("Hello, Zahirudeen!")
-        
+        Text("Create a recipe parameter")
+            .font(.title)
+        Text(self.myrecipeUUID.uuidString)
+            .font(.subheadline)
+            
         switch someVariable {
         case .metric:
             if somePayload is Length {
-                Text("Length")
+                HStack {
+                    Text("Length")
+                    Text((somePayload as! Length).unit)
+                    Text((somePayload as! Length).number.description)
+                }
             } else {Text("Not a Length")}
         case .measures:
             if somePayload is Measures {
@@ -74,6 +83,8 @@ struct CreateSomethingView: View {
 }
 
 #Preview {
-    CreateSomethingView(someenum: .metric, payload: Step(number: 1, step: "First", ingredients: [Ent](), equipment: [Ent](), length: nil))
-    CreateSomethingView(someenum: .metric, payload: Length(number: 1, unit: "meter"))
+    // create the preview with correct payload
+    CreateSomethingView(someenum: .metric, recipeuuid: UUID(), payload: Length(number: 1, unit: "ml"))
+    // create the preview with incorrect payload
+    //    CreateSomethingView(someenum: .metric, payload: Step(number: 1, step: "First", ingredients: [Ent](), equipment: [Ent](), length: nil))
 }
