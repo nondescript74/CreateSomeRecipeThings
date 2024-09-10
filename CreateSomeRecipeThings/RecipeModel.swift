@@ -49,9 +49,14 @@ struct Step {
 }
 
 // MARK: - Ent
-struct Ent {
+struct Ent: Codable {
     let id: Int
     let name, localizedName, image: String
+}
+
+struct Ingredient: Codable, Hashable {
+    let id: Int
+    let name: String
 }
 
 // MARK: - Length
@@ -59,6 +64,38 @@ struct Length {
     let number: Int
     let unit: String
 }
+
+let fluidUnits: [String] = ["milliliter", "liter", "ounce", "fluid ounce", "cup", "pint", "quart", "gallon"]
+let cuisines: [String] = [
+    "African",
+    "American",
+    "British",
+    "Cajun",
+    "Caribbean",
+    "Chinese",
+    "Eastern European",
+    "European",
+    "French",
+    "German",
+    "Greek",
+    "Indian",
+    "Irish",
+    "Italian",
+    "Japanese",
+    "Jewish",
+    "Korean",
+    "Latin American",
+    "Mediterranean",
+    "Mexican",
+    "Middle Eastern",
+    "Nordic",
+    "Southern",
+    "Spanish",
+    "Thai",
+    "Vietnamese"
+]
+let diets: [String] = []
+
 
 // MARK: - ExtendedIngredient
 struct ExtendedIngredient {

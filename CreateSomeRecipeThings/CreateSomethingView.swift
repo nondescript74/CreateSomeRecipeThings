@@ -15,6 +15,11 @@ struct CreateSomethingView: View {
         self.myrecipeUUID = recipeuuid
     }
     
+    init (someenum: SomeEnum, recipeuuid: UUID) {
+        self.someVariable = someenum
+        self.myrecipeUUID = recipeuuid
+    }
+    
     enum SomeEnum {
         case metric
         case measures
@@ -31,6 +36,19 @@ struct CreateSomethingView: View {
     fileprivate var somePayload: Any = Length(number: 1, unit: "meter")
     fileprivate var myrecipeUUID: UUID
     
+
+    
+    fileprivate func someFunction() {
+        //get any other things saved by the user related to what is being created
+        
+    }
+    
+    let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
     var body: some View {
         Text("Create a recipe parameter")
             .font(.title)
@@ -40,11 +58,7 @@ struct CreateSomethingView: View {
         switch someVariable {
         case .metric:
             if somePayload is Length {
-                HStack {
-                    Text("Length")
-                    Text((somePayload as! Length).unit)
-                    Text((somePayload as! Length).number.description)
-                }
+                CreateLengthView()
             } else {Text("Not a Length")}
         case .measures:
             if somePayload is Measures {
@@ -84,7 +98,7 @@ struct CreateSomethingView: View {
 
 #Preview {
     // create the preview with correct payload
-    CreateSomethingView(someenum: .metric, recipeuuid: UUID(), payload: Length(number: 1, unit: "ml"))
+    CreateSomethingView(someenum: .metric, recipeuuid: UUID(), payload: Length(number: 1, unit: "centimeter"))
     // create the preview with incorrect payload
     //    CreateSomethingView(someenum: .metric, payload: Step(number: 1, step: "First", ingredients: [Ent](), equipment: [Ent](), length: nil))
 }
