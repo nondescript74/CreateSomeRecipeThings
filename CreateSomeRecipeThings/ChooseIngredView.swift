@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct ChooseIngredView: View {
-    
-    @State fileprivate var ingredient: Ingredient
-    @State private var searchIsActive = false
+    @ObservedObject var selectedIngredientsList = SelectedIngredientsList.init()
+    @State private var searchText: String = ""
+    @State private var filteredIngredients: [Ingredient] = []
+    @State private var displayedIngredient: Ingredient?
+
     
     init() {
-        _ingredient = .init(initialValue: Ingredient(id: 2019, name: "fenugreek seeds"))
+          UITextField.appearance().clearButtonMode = .whileEditing
     }
     
-    let ingred_list = Bundle.main.url(forResource:"ingredients_list", withExtension: "json")
+    private let ingred_list = Bundle.main.url(forResource:"ingredients_list", withExtension: "json")
     
-    func createJSON() -> [Ingredient] {
+    private func createJSON() -> [Ingredient] {
         guard let url = ingred_list else { return [] }
         do {
             let data = try Data(contentsOf: url)
@@ -30,27 +32,65 @@ struct ChooseIngredView: View {
         }
     }
     
-    func addRandom() {
-        ingredient = createJSON().randomElement()!
-        print(ingredient)
+    private func search() {
+        let ingredients = createJSON()
+        filteredIngredients = ingredients.filter({$0.name.contains(searchText.lowercased())})
     }
     
-
+    private func add() {
+        // expects the first value only
+        if filteredIngredients.isEmpty { return }
+        if filteredIngredients.count > 1 { return }
+        if selectedIngredientsList.selectedIngredients.contains(filteredIngredients[0]) { return }
+        selectedIngredientsList.addIngredient(filteredIngredients[0])
+        print(selectedIngredientsList.selectedIngredients)
+    }
     
+    private func remove() {
+        if selectedIngredientsList.selectedIngredients.isEmpty { return }
+        if filteredIngredients.count > 1 { return }
+        if !selectedIngredientsList.selectedIngredients.contains(filteredIngredients[0]) { return }
+        selectedIngredientsList.removeIngredient(filteredIngredients[0])
+        print(selectedIngredientsList.selectedIngredients)
+    }
     
     var body: some View {
-        Text(ingredient.name + " " + ingredient.id.description)
+        VStack {
+            HStack {
+                TextField("Search", text: $searchText)
+                    .padding()
+                    .border(Color.black)
+                    .padding()
+                
+                Button(action: search) {
+                    Image(systemName: "magnifyingglass")
+                }
+            }
             
-        HStack {
-            Picker("Unit", selection: $ingredient) {
-                ForEach(createJSON(), id: \.self) {
+            List {
+                ForEach(selectedIngredientsList.selectedIngredients, id: \.self) {
+                    Text($0.name)
+                }
+            }
+            
+            Picker("Select", selection: $displayedIngredient) {
+                ForEach(filteredIngredients, id: \.self) {
                     Text($0.name)
                 }
             }.pickerStyle(.wheel)
             
-            Button(action: addRandom) {
-                Text("Add Random")
-            }.padding()
+            
+            HStack {
+                Button(action: add) {
+                    Text("Add")
+                        .padding()
+                }.disabled(filteredIngredients.count == 0 || filteredIngredients.count > 1)
+                
+                Button(action: remove) {
+                    Text("Remove")
+                        .padding()
+                }.disabled(filteredIngredients.count == 0 || filteredIngredients.count > 1)
+            }
             
         }
     }
