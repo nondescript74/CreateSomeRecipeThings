@@ -49,7 +49,7 @@ struct Step {
 }
 
 // MARK: - Ent
-struct Ent: Codable {
+struct Ent: Codable, Hashable {
     let id: Int
     let name, localizedName, image: String
 }

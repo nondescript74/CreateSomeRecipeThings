@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct CreateStepView: View {
-    
+    @ObservedObject var stepList: StepList = StepList.init()
+
     init(ruuid: UUID) {
+        // must link to recipe
         self.uuid = ruuid
     }
     
@@ -18,7 +20,7 @@ struct CreateStepView: View {
     fileprivate var uuid: UUID
     
     fileprivate func addStep() {
-        let step = Step(number: 1, step: steptext, ingredients: [], equipment: [], length: nil)
+        var step = Step(number: 1, step: steptext, ingredients: [], equipment: [], length: nil)
         print(step)
     }
     
@@ -27,7 +29,6 @@ struct CreateStepView: View {
     }
     var body: some View {
         VStack {
-            
             HStack  {
                 TextField("Step description", text: $steptext)
                     .padding()
@@ -35,6 +36,9 @@ struct CreateStepView: View {
                     addStep()
                 }
                 .padding()
+            }
+            HStack  {
+                ChooseIngredView()
             }
         }
     }
