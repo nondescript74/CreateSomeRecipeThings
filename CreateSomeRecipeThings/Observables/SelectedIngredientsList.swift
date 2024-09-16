@@ -20,9 +20,11 @@ class SelectedIngredientsList: ObservableObject {
     @MainActor
     func addIngredient(_ ingredient: Ingredient) {
         self.selectedIngredients.append(ingredient)
+        print(self.selectedIngredients)
     }
     
     func removeIngredient(_ ingredient: Ingredient) {
         self.selectedIngredients.removeAll(where: { $0.id == ingredient.id })
+        print(self.selectedIngredients)
     }
 }

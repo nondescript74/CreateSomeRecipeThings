@@ -11,12 +11,9 @@ class StepList: ObservableObject {
     
     // MARK: - Publisher
     @Published var steps: [Step]
-    @Published var currentStep: Step
-    
     
     init() {
         self.steps = []
-        self.currentStep = .init(number: 1, step: "First Step", ingredients: [], equipment: [], length: .none)
     }
     
     
@@ -25,7 +22,10 @@ class StepList: ObservableObject {
         self.steps.append(step)
     }
     
-    func removeStep(_ step: Step) {
-        self.steps.removeAll(where: { $0.step == currentStep.step })
+    func newAddStep(text: String) {
+        let step = Step(number: steps.count + 1, step: text, ingredients: [], equipment: [], length: .none)
+        self.steps.append (step)
     }
+    
+    
 }

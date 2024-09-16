@@ -9,10 +9,16 @@ import SwiftUI
 
 struct ChooseEquipmentView: View {
     
-    @ObservedObject var selectedEquipment = SelectedEquipmentList.init()
+    // MARK: - Environment Variables
+    // MARK: - Environment Variables
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
+    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
+    
     @State private var searchText: String = ""
     @State private var filteredEquipment: [Ent] = []
     @State private var displayedEquipment: Ent?
+    @State private var selection = Set<Ent>()
     
     init() {
         UITextField.appearance().clearButtonMode = .whileEditing
@@ -37,26 +43,28 @@ struct ChooseEquipmentView: View {
         print(filteredEquipment)
     }
     
-    private func addEquipment() {
-        if filteredEquipment.isEmpty { return }
-        if filteredEquipment.count > 1 { return }
-        let equipment = filteredEquipment.first!
-        if self.selectedEquipment.selectedEquipment.contains(equipment) { return }
-        selectedEquipment.addEquipment(equipment)
-        print(selectedEquipment.selectedEquipment)
+    private func remove() {
+        if selection.isEmpty { return }
+        for eachSel in selection {
+            if selectedEquipmentList.selectedEquipment.contains(eachSel) {
+                selectedEquipmentList.selectedEquipment.remove(at: selectedEquipmentList.selectedEquipment.firstIndex(of: eachSel)!)
+                print("Removed: \(eachSel)")
+            }
+        }
     }
     
-    private func removeEquipment() {
-        if filteredEquipment.isEmpty { return }
-        if filteredEquipment.count > 1 { return }
-        if selectedEquipment.selectedEquipment.contains(filteredEquipment.first!) { return }
-        selectedEquipment.removeEquipment(filteredEquipment.first!)
-        print(selectedEquipment.selectedEquipment)
+    private func add() {
+        if selection.isEmpty { return }
+        for eachSel in selection {
+            if !selectedEquipmentList.selectedEquipment.contains(eachSel) {
+                selectedEquipmentList.addEquipment(eachSel)
+                print("Added: ", selectedEquipmentList.selectedEquipment.last!)
+            }
+        }
     }
-
+    
     var body: some View {
-        VStack {
-            Text("Choose Equipment")
+        NavigationStack {
             HStack {
                 TextField("Search", text: $searchText)
                     .padding()
@@ -66,38 +74,38 @@ struct ChooseEquipmentView: View {
                 Button(action: search) {
                     Image(systemName: "magnifyingglass")
                 }
+                .padding(.trailing)
             }
             
-            Picker("Select", selection: $displayedEquipment) {
-                ForEach(filteredEquipment, id: \.self) {
-                    Text($0.name)
-                }
-            }.pickerStyle(.wheel)
-            
+            List(filteredEquipment, id: \.self, selection: $selection) { ent in
+                Text(ent.name)
+            }
             
             HStack {
-                Button(action: addEquipment) {
-                    Text("Add Equipment")
+                Button(action: add) {
+                    Text("Add")
                         .padding()
-                }.disabled(filteredEquipment.count == 0 || filteredEquipment.count > 1)
+                }.disabled(selection.count == 0)
                 
-                Button(action: removeEquipment) {
+                Button(action: remove) {
                     Text("Remove")
                         .padding()
-                }.disabled(filteredEquipment.count == 0 || filteredEquipment.count > 1)
+                }.disabled(selection.count == 0)
             }
             
-            
-            List {
-                ForEach(selectedEquipment.selectedEquipment, id: \.self) {
-                    Text($0.name)
-                }
+            List(selectedEquipmentList.selectedEquipment, id: \.self) { ent in
+                Text(ent.name)
             }
             
+            .navigationTitle("Choose Equipment")
         }
+        
     }
 }
 
 #Preview {
     ChooseEquipmentView()
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(StepList())
 }

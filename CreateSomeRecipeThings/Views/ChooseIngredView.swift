@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct ChooseIngredView: View {
-    @ObservedObject var selectedIngredientsList: SelectedIngredientsList = SelectedIngredientsList.init()
+    // MARK: - Environment Variables
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
+    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
+    
     @State private var searchText: String = ""
     @State private var filteredIngredients: [Ingredient] = []
     @State private var displayedIngredient: Ingredient?
@@ -45,6 +49,7 @@ struct ChooseIngredView: View {
         for eachSel in selection {
             if selectedIngredientsList.selectedIngredients.contains(eachSel) {
                 selectedIngredientsList.removeIngredient(eachSel)
+                print("Removed: \(eachSel)")
             }
         }
     }
@@ -53,14 +58,13 @@ struct ChooseIngredView: View {
         if selection.isEmpty { return }
         for eachSel in selection {
             if !selectedIngredientsList.selectedIngredients.contains(eachSel) {
-                selectedIngredientsList.addIngredient(eachSel)}
+                selectedIngredientsList.addIngredient(eachSel)
+                print("Added: ", selectedIngredientsList.selectedIngredients.last!)
+            }
         }
     }
     
-    
-    
     var body: some View {
-        
         NavigationStack {
             HStack {
                 TextField("Search", text: $searchText)
@@ -95,9 +99,9 @@ struct ChooseIngredView: View {
             }
             
             .navigationTitle("Choose Ingredients")
-            .toolbar {
-                EditButton()
-            }
+//            .toolbar {
+//                EditButton()
+//            }
         }
         
     }
@@ -106,4 +110,7 @@ struct ChooseIngredView: View {
 
 #Preview {
     ChooseIngredView()
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(StepList())
 }

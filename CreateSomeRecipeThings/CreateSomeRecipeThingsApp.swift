@@ -11,8 +11,6 @@ import SwiftUI
 struct CreateSomeRecipeThingsApp: App {
     var body: some Scene {
         WindowGroup {
-//            ChooseIngredView()
-//            ChooseEquipmentView()
             CreateStepView(ruuid: UUID())
                 .environmentObject(SelectedIngredientsList())
                 .environmentObject(StepList())

@@ -8,51 +8,63 @@
 import SwiftUI
 
 struct CreateStepView: View {
-    @ObservedObject var stepList: StepList
-    @ObservedObject var selectedIngredientsList: SelectedIngredientsList
-    @ObservedObject var selectedEquipmentList: SelectedEquipmentList
+    // MARK: - Environment Variables
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
+    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
 
     init(ruuid: UUID) {
         // must link to recipe
         self.uuid = ruuid
-        self.selectedIngredientsList = .init()
-        self.self .selectedEquipmentList = .init()
-        self.stepList = .init()
     }
     
     @State fileprivate var steptext: String = ""
-    @State fileprivate var ingredient: String = ""
     fileprivate var uuid: UUID
+    fileprivate var stepnumber: Int = 0
+    fileprivate enum tabs: String {
+        case ingredients = "Ingredients 🧆"
+        case equipment = "Equipment 🍒"
+    }
     
     fileprivate func addStep() {
-        
-        let step = Step(number: 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, length: nil)
-        print(step)
+        let step = Step(number: stepList.steps.count, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, length: nil)
+        stepList.addStep(step)
+        print(stepList.steps)
     }
     
     fileprivate func checkRecipeExists() {
         
     }
     var body: some View {
-        VStack {
-            Text("Enter the step description")
-            TextField("Step description", text: $steptext)
-                .padding()
-                .border(Color.black, width: 1)
-            Button("Add Step") {
-                addStep()
+        NavigationView {
+            VStack  {
+                TextField("Step description", text: $steptext)
+                    .padding()
+                    .border(Color.black, width: 1)
+                    .padding()
+                TabView {
+                    ChooseIngredView().tabItem {
+                        Image(uiImage: imageDocDocEmpty!)
+                        Text(tabs.ingredients.rawValue)
+                    }
+                    
+                    ChooseEquipmentView().tabItem {
+                        Image(uiImage: imageDocDocEmpty!)
+                        Text(tabs.equipment.rawValue)}
+                    }
             }
-            
-            
-            ChooseIngredView()
-                .padding()
-            
-            ChooseEquipmentView()
-                .padding()
+            .navigationTitle("Create Step")
+        }
+        
+        Button("Add Step") {
+            addStep()
         }
     }
 }
 
 #Preview {
     CreateStepView(ruuid: UUID())
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(StepList())
 }
