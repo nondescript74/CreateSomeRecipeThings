@@ -11,12 +11,6 @@ struct SelectIngredientView: View {
     
     @State fileprivate var selectedIngredient: Ingredient
     fileprivate var ingredients: [Ingredient]
-    let recipesName = "Reczipes"
-    let recipeNotesFolderName = "RecipeNotes"
-    let recipeImagesFolderName = "RecipeImages"
-    let recipeIngredientsFolderName = "RecipeIngredients"
-    let rnotes = "RecipeNotes"
-    let rimages = "RecipeImages"
     
     func getDocuDirUrl() -> URL {
         var myReturn:URL

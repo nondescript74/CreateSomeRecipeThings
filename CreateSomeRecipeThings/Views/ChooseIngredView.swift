@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ChooseIngredView: View {
-    @ObservedObject var selectedIngredientsList = SelectedIngredientsList.init()
+    @ObservedObject var selectedIngredientsList: SelectedIngredientsList = SelectedIngredientsList.init()
     @State private var searchText: String = ""
     @State private var filteredIngredients: [Ingredient] = []
     @State private var displayedIngredient: Ingredient?
-
+    @State private var selection = Set<Ingredient>()
+    
     
     init() {
-          UITextField.appearance().clearButtonMode = .whileEditing
+        UITextField.appearance().clearButtonMode = .whileEditing
     }
     
     private let ingred_list = Bundle.main.url(forResource:"ingredients_list", withExtension: "json")
@@ -35,27 +36,32 @@ struct ChooseIngredView: View {
     private func search() {
         let ingredients = createJSON()
         filteredIngredients = ingredients.filter({$0.name.contains(searchText.lowercased())})
-    }
-    
-    private func add() {
-        // expects the first value only
-        if filteredIngredients.isEmpty { return }
-        if filteredIngredients.count > 1 { return }
-        if selectedIngredientsList.selectedIngredients.contains(filteredIngredients[0]) { return }
-        selectedIngredientsList.addIngredient(filteredIngredients[0])
-        print(selectedIngredientsList.selectedIngredients)
+        print("Filtered Ingredients: \(filteredIngredients)")
+        print("Search Text: \(searchText)")
     }
     
     private func remove() {
-        if selectedIngredientsList.selectedIngredients.isEmpty { return }
-        if filteredIngredients.count > 1 { return }
-        if !selectedIngredientsList.selectedIngredients.contains(filteredIngredients[0]) { return }
-        selectedIngredientsList.removeIngredient(filteredIngredients[0])
-        print(selectedIngredientsList.selectedIngredients)
+        if selection.isEmpty { return }
+        for eachSel in selection {
+            if selectedIngredientsList.selectedIngredients.contains(eachSel) {
+                selectedIngredientsList.removeIngredient(eachSel)
+            }
+        }
     }
     
+    private func add() {
+        if selection.isEmpty { return }
+        for eachSel in selection {
+            if !selectedIngredientsList.selectedIngredients.contains(eachSel) {
+                selectedIngredientsList.addIngredient(eachSel)}
+        }
+    }
+    
+    
+    
     var body: some View {
-        VStack {
+        
+        NavigationStack {
             HStack {
                 TextField("Search", text: $searchText)
                     .padding()
@@ -65,35 +71,37 @@ struct ChooseIngredView: View {
                 Button(action: search) {
                     Image(systemName: "magnifyingglass")
                 }
+                .padding(.trailing)
             }
             
-            List {
-                ForEach(selectedIngredientsList.selectedIngredients, id: \.self) {
-                    Text($0.name)
-                }
+            List(filteredIngredients, id: \.self, selection: $selection) { ent in
+                Text(ent.name)
             }
-            
-            Picker("Select", selection: $displayedIngredient) {
-                ForEach(filteredIngredients, id: \.self) {
-                    Text($0.name)
-                }
-            }.pickerStyle(.wheel)
-            
             
             HStack {
                 Button(action: add) {
                     Text("Add")
                         .padding()
-                }.disabled(filteredIngredients.count == 0 || filteredIngredients.count > 1)
+                }.disabled(selection.count == 0)
                 
                 Button(action: remove) {
                     Text("Remove")
                         .padding()
-                }.disabled(filteredIngredients.count == 0 || filteredIngredients.count > 1)
+                }.disabled(selection.count == 0)
             }
             
+            List(selectedIngredientsList.selectedIngredients, id: \.self) { ingred in
+                Text(ingred.name)
+            }
+            
+            .navigationTitle("Choose Ingredients")
+            .toolbar {
+                EditButton()
+            }
         }
+        
     }
+    
 }
 
 #Preview {

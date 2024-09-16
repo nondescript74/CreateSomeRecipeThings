@@ -54,10 +54,12 @@ struct Ent: Codable, Hashable {
     let name, localizedName, image: String
 }
 
-struct Ingredient: Codable, Hashable {
-    let id: Int
-    let name: String
-}
+//struct Ingredient: Codable, Hashable {
+//    let id: Int
+//    let name: String
+//}
+
+typealias Ingredient = Ent
 
 // MARK: - Length
 struct Length {
@@ -95,6 +97,13 @@ let cuisines: [String] = [
     "Vietnamese"
 ]
 let diets: [String] = []
+
+let recipesName = "Reczipes"
+let recipeNotesFolderName = "RecipeNotes"
+let recipeImagesFolderName = "RecipeImages"
+let recipeIngredientsFolderName = "RecipeIngredients"
+let rnotes = "RecipeNotes"
+let rimages = "RecipeImages"
 
 
 // MARK: - ExtendedIngredient

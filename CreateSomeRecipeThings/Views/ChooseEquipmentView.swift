@@ -34,6 +34,7 @@ struct ChooseEquipmentView: View {
     private func search() {
         let equipment = createJSON()
         filteredEquipment = equipment.filter({$0.name.contains(searchText.lowercased())})
+        print(filteredEquipment)
     }
     
     private func addEquipment() {
@@ -55,6 +56,7 @@ struct ChooseEquipmentView: View {
 
     var body: some View {
         VStack {
+            Text("Choose Equipment")
             HStack {
                 TextField("Search", text: $searchText)
                     .padding()
@@ -63,12 +65,6 @@ struct ChooseEquipmentView: View {
                 
                 Button(action: search) {
                     Image(systemName: "magnifyingglass")
-                }
-            }
-            
-            List {
-                ForEach(selectedEquipment.selectedEquipment, id: \.self) {
-                    Text($0.name)
                 }
             }
             
@@ -81,7 +77,7 @@ struct ChooseEquipmentView: View {
             
             HStack {
                 Button(action: addEquipment) {
-                    Text("Add")
+                    Text("Add Equipment")
                         .padding()
                 }.disabled(filteredEquipment.count == 0 || filteredEquipment.count > 1)
                 
@@ -89,6 +85,13 @@ struct ChooseEquipmentView: View {
                     Text("Remove")
                         .padding()
                 }.disabled(filteredEquipment.count == 0 || filteredEquipment.count > 1)
+            }
+            
+            
+            List {
+                ForEach(selectedEquipment.selectedEquipment, id: \.self) {
+                    Text($0.name)
+                }
             }
             
         }
