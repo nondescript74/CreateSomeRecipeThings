@@ -20,22 +20,32 @@ class StepList: ObservableObject {
     init() {
         do  {
             let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesStepsDirUrl().path)
+#if DEBUG
             print("Contents", contents)
+#endif
             if contents.isEmpty {
+#if DEBUG
                 print("Contents Empty")
+#endif
                 steps = []
             } else {
                 let fileUrl = getRecipesStepsDirUrl()
+#if DEBUG
                 print("Steps url: ", fileUrl)
+#endif
                 for aurl in contents {
                     let url = fileUrl.appendingPathComponent(aurl)
+#if DEBUG
                     print("Step url: ", url)
+#endif
                     let astep = try JSONDecoder().decode(Step.self, from: try! Data(contentsOf: url))
                     steps.append(astep)
                 }
             }
         } catch {
+#if DEBUG
             print("not able to read steps")
+#endif
             self.steps = []
         }
     }
@@ -45,10 +55,14 @@ class StepList: ObservableObject {
 
     func addStep(text: String) {
         if self.steps.contains(where: { $0.step == text }) {
+#if DEBUG
             print("Step already exists")
+#endif
             return
         }
+#if DEBUG
         print("Adding step: \(text)")
+#endif
 //        print("Ingredients: ", selectedIngredientsList.selectedIngredients)
         let step = Step(number: steps.count + 1, step: text, ingredients: [], equipment: [] , length: .none)
         self.steps.append (step)
@@ -61,12 +75,12 @@ class StepList: ObservableObject {
         let stepFileUrl = stepsDir.appendingPathComponent(step.step.replacingOccurrences(of: " ", with: "_").appending("\(step.number)" + ".json"))
         do {
             try JSONEncoder().encode(stepToSave).write(to: stepFileUrl)
+#if DEBUG
             print("Saved step: \(stepToSave)")
             print("Saved step to: \(stepFileUrl)")
+#endif
         } catch {
             print("Error saving step: \(error)")
         }
     }
-    
-    
 }

@@ -33,7 +33,9 @@ struct ChooseEquipmentView: View {
             let decoder = JSONDecoder()
             return try decoder.decode([Ent].self, from: data)
         } catch {
+#if DEBUG
             print("Error: \(error)")
+#endif
             return []
         }
     }
@@ -41,7 +43,9 @@ struct ChooseEquipmentView: View {
     private func search() {
         let equipment = createJSON()
         filteredEquipment = equipment.filter({$0.name.contains(searchText.lowercased())})
+#if DEBUG
         print(filteredEquipment)
+#endif
     }
     
     private func remove() {
@@ -49,7 +53,9 @@ struct ChooseEquipmentView: View {
         for eachSel in selection {
             if selectedEquipmentList.selectedEquipment.contains(eachSel) {
                 selectedEquipmentList.selectedEquipment.remove(at: selectedEquipmentList.selectedEquipment.firstIndex(of: eachSel)!)
-                print("Removed: \(eachSel)")
+#if DEBUG
+               print("Removed: \(eachSel)")
+#endif
             }
         }
     }
@@ -59,7 +65,9 @@ struct ChooseEquipmentView: View {
         for eachSel in selection {
             if !selectedEquipmentList.selectedEquipment.contains(eachSel) {
                 selectedEquipmentList.addEquipment(eachSel)
+#if DEBUG
                 print("Added: ", selectedEquipmentList.selectedEquipment.last!)
+#endif
             }
         }
     }

@@ -23,7 +23,9 @@ struct CreateStepView: View {
     
     fileprivate func addStep() {
         stepList.addStep(text: steptext)
+        #if DEBUG
         print(stepList.steps)
+        #endif
     }
     
     var body: some View {

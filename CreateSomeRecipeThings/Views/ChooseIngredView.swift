@@ -41,8 +41,10 @@ struct ChooseIngredView: View {
     private func search() {
         let ingredients = createJSON()
         filteredIngredients = ingredients.filter({$0.name.contains(searchText.lowercased())})
+#if DEBUG
         print("Filtered Ingredients: \(filteredIngredients)")
         print("Search Text: \(searchText)")
+#endif
     }
     
     private func remove() {
@@ -50,7 +52,9 @@ struct ChooseIngredView: View {
         for eachSel in selection {
             if selectedIngredientsList.selectedIngredients.contains(eachSel) {
                 selectedIngredientsList.removeIngredient(eachSel)
+#if DEBUG
                 print("Removed: \(eachSel)")
+#endif
             }
         }
     }
@@ -60,7 +64,9 @@ struct ChooseIngredView: View {
         for eachSel in selection {
             if !selectedIngredientsList.selectedIngredients.contains(eachSel) {
                 selectedIngredientsList.addIngredient(eachSel)
+#if DEBUG
                 print("Added: ", selectedIngredientsList.selectedIngredients.last!)
+#endif
             }
         }
     }

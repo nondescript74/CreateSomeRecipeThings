@@ -32,11 +32,13 @@ func getReczipesFolderUrl() -> URL {
         
         if !FileManager.default.fileExists(atPath: myReturn.path) {
             try FileManager.default.createDirectory(at: myReturn, withIntermediateDirectories: true , attributes: nil)
+#if DEBUG
             print("created Recipes directory")
+#endif
             return myReturn
         } else {
             return myReturn
-
+            
         }
     } catch {
         fatalError("no user documents directory")
@@ -50,7 +52,9 @@ func getRecipesStepsDirUrl() -> URL {
     if !FileManager.default.fileExists(atPath: stepsUrl.path) {
         do {
             try FileManager.default.createDirectory(at: stepsUrl, withIntermediateDirectories: true, attributes: nil)
+#if DEBUG
             print("created Steps directory")
+#endif
             return stepsUrl
         } catch {
             fatalError("could not create Steps directory")
