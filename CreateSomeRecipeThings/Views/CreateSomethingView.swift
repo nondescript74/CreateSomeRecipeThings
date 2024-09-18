@@ -9,6 +9,11 @@ import SwiftUI
 
 struct CreateSomethingView: View {
     
+    // MARK: - Environment Variables
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
+    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
+    
     init (someenum: SomeEnum, recipeuuid: UUID, payload: Any) {
         self.someVariable = someenum
         self.somePayload = payload
@@ -99,6 +104,7 @@ struct CreateSomethingView: View {
 #Preview {
     // create the preview with correct payload
     CreateSomethingView(someenum: .metric, recipeuuid: UUID(), payload: Length(number: 1, unit: "centimeter"))
-    // create the preview with incorrect payload
-    //    CreateSomethingView(someenum: .metric, payload: Step(number: 1, step: "First", ingredients: [Ent](), equipment: [Ent](), length: nil))
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(StepList())
 }

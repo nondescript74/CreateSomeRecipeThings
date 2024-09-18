@@ -11,10 +11,10 @@ import SwiftUI
 struct CreateSomeRecipeThingsApp: App {
     var body: some Scene {
         WindowGroup {
-            CreateStepView(ruuid: UUID())
-                .environmentObject(SelectedIngredientsList())
-                .environmentObject(StepList())
-                .environmentObject(SelectedEquipmentList())
+            ApplicationView()
         }
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(StepList())
+        .environmentObject(SelectedEquipmentList())
     }
 }

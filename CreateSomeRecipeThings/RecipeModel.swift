@@ -42,7 +42,11 @@ struct AnalyzedInstruction {
 }
 
 // MARK: - Step
-struct Step {
+struct Step: Codable, Hashable {
+    static func == (lhs: Step, rhs: Step) -> Bool {
+        lhs.number == rhs.number && lhs.step == rhs.step
+    }
+    
     let number: Int
     let step: String
     let ingredients, equipment: [Ent]
@@ -63,7 +67,7 @@ struct Ent: Codable, Hashable {
 typealias Ingredient = Ent
 
 // MARK: - Length
-struct Length {
+struct Length: Codable, Hashable {
     let number: Int
     let unit: String
 }
@@ -97,37 +101,13 @@ let cuisines: [String] = [
     "Thai",
     "Vietnamese"
 ]
+
 let diets: [String] = []
 
-let recipesName = "Reczipes"
+let reczipesFolderName = "Reczipes"
 let recipeNotesFolderName = "RecipeNotes"
 let recipeImagesFolderName = "RecipeImages"
-let recipeIngredientsFolderName = "RecipeIngredients"
-let rnotes = "RecipeNotes"
-let rimages = "RecipeImages"
-
-let suitImage =  UIImage(systemName: "suit.heart")!
-let checkmarkImage = UIImage(systemName: "checkmark.seal")!
-let lassoImage = UIImage(systemName: "lasso")!
-let wandNStarsImage = UIImage(systemName: "wand.and.stars")!
-let rectandtextmagglass = UIImage(systemName: "rectangle.and.text.magnifyingglass")
-let docandtextmagglass = UIImage(systemName: "doc.text.magnifyingglass")
-let crosscirclefill = UIImage(systemName: "cross.circle.fill")
-let tortoise = UIImage(systemName: "tortoise")
-let hare = UIImage(systemName: "hare")
-let imageSquarePencil = UIImage(systemName: "square.and.pencil")
-let imageSuitSpadeEmpty = UIImage(systemName: "suite.spade")
-let imageDocDocEmpty = UIImage(systemName: "doc.on.doc")
-let imageDocDocFill = UIImage(systemName: "doc.on.doc.fill")
-let scribblevariable = UIImage(systemName: "scribble.variable")
-let rectstackbadgepersoncrop = UIImage(systemName: "rectangle.stack.badge.person.crop")
-let questionmarkcircle = UIImage(systemName: "questionmark.circle")
-let folderfillbadgeplus = UIImage(systemName: "folder.fill.badge.plus")
-let magnifyingglass = UIImage(systemName: "magnifyingglass")
-let lassosparkles = UIImage(systemName: "lasso.sparkles")
-let squareandarrowdown = UIImage(systemName:"square.and.arrow.down")
-let shareImage = UIImage(systemName: "square.and.arrow.up")
-let videobadgeplus = UIImage(systemName:"video.badge.plus")
+let recipeStepsFolderName = "RecipeSteps"
 
 
 // MARK: - ExtendedIngredient

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ChooseEquipmentView: View {
     
@@ -99,6 +100,9 @@ struct ChooseEquipmentView: View {
             
             .navigationTitle("Choose Equipment")
         }
+        .environmentObject(stepList)
+        .environmentObject(selectedEquipmentList)
+        .environmentObject(selectedIngredientsList)
         
     }
 }

@@ -20,45 +20,37 @@ struct CreateStepView: View {
     
     @State fileprivate var steptext: String = ""
     fileprivate var uuid: UUID
-    fileprivate var stepnumber: Int = 0
-    fileprivate enum tabs: String {
-        case ingredients = "Ingredients 🧆"
-        case equipment = "Equipment 🍒"
-    }
     
     fileprivate func addStep() {
-        let step = Step(number: stepList.steps.count, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, length: nil)
-        stepList.addStep(step)
+        stepList.addStep(text: steptext)
         print(stepList.steps)
     }
     
-    fileprivate func checkRecipeExists() {
-        
-    }
     var body: some View {
-        NavigationView {
-            VStack  {
-                TextField("Step description", text: $steptext)
-                    .padding()
-                    .border(Color.black, width: 1)
-                    .padding()
-                TabView {
-                    ChooseIngredView().tabItem {
-                        Image(uiImage: imageDocDocEmpty!)
-                        Text(tabs.ingredients.rawValue)
-                    }
-                    
-                    ChooseEquipmentView().tabItem {
-                        Image(uiImage: imageDocDocEmpty!)
-                        Text(tabs.equipment.rawValue)}
-                    }
+        VStack  {
+            TextField("Step description", text: $steptext)
+                .padding()
+                .border(Color.black, width: 1)
+                .padding()
+            
+            
+            Button("Add Step") {
+                addStep()
             }
-            .navigationTitle("Create Step")
+            
+//            List {
+//                
+//                ForEach(stepList.steps, id: \.self) { step in
+//                    NavigationLink(destination: StepDetailView(step: step)) {
+//                        Text(step.text)
+//                    }
+//                }
+//
+//            }
         }
-        
-        Button("Add Step") {
-            addStep()
-        }
+        .environmentObject(selectedEquipmentList)
+        .environmentObject(selectedIngredientsList)
+        .environmentObject(stepList)
     }
 }
 

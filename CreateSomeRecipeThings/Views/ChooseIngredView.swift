@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ChooseIngredView: View {
     // MARK: - Environment Variables
@@ -93,7 +94,7 @@ struct ChooseIngredView: View {
                         .padding()
                 }.disabled(selection.count == 0)
             }
-            
+
             List(selectedIngredientsList.selectedIngredients, id: \.self) { ingred in
                 Text(ingred.name)
             }
@@ -103,6 +104,9 @@ struct ChooseIngredView: View {
 //                EditButton()
 //            }
         }
+        .environmentObject(stepList)
+        .environmentObject(selectedEquipmentList)
+        .environmentObject(selectedIngredientsList)
         
     }
     
