@@ -52,24 +52,12 @@ class StepList: ObservableObject {
     
     
     @MainActor
-
-    func addStep(text: String) {
-        if self.steps.contains(where: { $0.step == text }) {
-#if DEBUG
-            print("Step already exists")
-#endif
-            return
-        }
-#if DEBUG
-        print("Adding step: \(text)")
-#endif
-//        print("Ingredients: ", selectedIngredientsList.selectedIngredients)
-        let step = Step(number: steps.count + 1, step: text, ingredients: [], equipment: [] , length: .none)
-        self.steps.append (step)
-        saveStep(step: step)
+    
+    func getCountOfSteps() -> Int {
+        return steps.count
     }
     
-    private func saveStep(step: Step) {
+    func saveStep(step: Step) {
         let stepToSave = steps.first(where: { $0.number == step.number })!
         let stepsDir = getRecipesStepsDirUrl()
         let stepFileUrl = stepsDir.appendingPathComponent(step.step.replacingOccurrences(of: " ", with: "_").appending("\(step.number)" + ".json"))

@@ -14,6 +14,7 @@ class SelectedIngredientsList: ObservableObject {
     
     init() {
         self.selectedIngredients = []
+        print(self.selectedIngredients)
     }
     
     

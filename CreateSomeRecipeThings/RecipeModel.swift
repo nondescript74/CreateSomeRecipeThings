@@ -42,7 +42,15 @@ struct AnalyzedInstruction {
 }
 
 // MARK: - Step
-struct Step: Codable, Hashable {
+struct Step: Codable, Hashable, Comparable {
+    static func < (lhs: Step, rhs: Step) -> Bool {
+        lhs.number < rhs.number
+    }
+    
+    static func > (lhs: Step, rhs: Step) -> Bool {
+        lhs.number > rhs.number
+    }
+    
     static func == (lhs: Step, rhs: Step) -> Bool {
         lhs.number == rhs.number && lhs.step == rhs.step
     }

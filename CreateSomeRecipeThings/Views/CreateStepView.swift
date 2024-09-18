@@ -22,10 +22,15 @@ struct CreateStepView: View {
     fileprivate var uuid: UUID
     
     fileprivate func addStep() {
-        stepList.addStep(text: steptext)
-        #if DEBUG
-        print(stepList.steps)
-        #endif
+        let myStep = Step(number: stepList.getCountOfSteps() + 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, length: .none)
+        stepList.steps.append(myStep)
+#if DEBUG
+        print("Steps: ",stepList.steps)
+#endif
+        stepList.saveStep(step: myStep)
+#if DEBUG
+        print("StepList: "," saved a step")
+#endif
     }
     
     var body: some View {
@@ -37,18 +42,12 @@ struct CreateStepView: View {
             
             
             Button("Add Step") {
+                #if DEBUG
+                print("selectedIngredientsList.selectedIngredients.count ", selectedIngredientsList.selectedIngredients.count.description)
+                print("selectedEquipmentList.selectedEquipment.count", selectedEquipmentList.selectedEquipment.count.description)
+                #endif
                 addStep()
             }
-            
-//            List {
-//                
-//                ForEach(stepList.steps, id: \.self) { step in
-//                    NavigationLink(destination: StepDetailView(step: step)) {
-//                        Text(step.text)
-//                    }
-//                }
-//
-//            }
         }
         .environmentObject(selectedEquipmentList)
         .environmentObject(selectedIngredientsList)
