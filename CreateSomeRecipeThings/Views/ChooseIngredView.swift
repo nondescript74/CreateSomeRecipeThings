@@ -18,6 +18,8 @@ struct ChooseIngredView: View {
     @State private var filteredIngredients: [Ingredient] = []
     @State private var displayedIngredient: Ingredient?
     @State private var selection = Set<Ingredient>()
+    @State fileprivate var unit: String = "teaspoon"
+    @State fileprivate var number: Int?
     
     
     init() {
@@ -63,7 +65,8 @@ struct ChooseIngredView: View {
         if selection.isEmpty { return }
         for eachSel in selection {
             if !selectedIngredientsList.selectedIngredients.contains(eachSel) {
-                selectedIngredientsList.addIngredient(eachSel)
+                let createIngredientWithAmount = Ingredient(id: eachSel.id, name: eachSel.name, localizedName: eachSel.localizedName, image: eachSel.image, amount: Length(number: number ?? 0, unit: unit))
+                selectedIngredientsList.addIngredient(createIngredientWithAmount)
 #if DEBUG
                 print("Added: ", selectedIngredientsList.selectedIngredients.last!)
 #endif
@@ -84,7 +87,15 @@ struct ChooseIngredView: View {
                 }
                 .padding(.trailing)
             }
-            
+            HStack {
+                TextField("Enter amount", value: $number, formatter: formatter)
+                    .padding()
+                Picker("Unit", selection: $unit) {
+                    ForEach(volumeUnits, id: \.self) { Text($0)
+                    }
+                }
+                .padding()
+            }
             List(filteredIngredients, id: \.self, selection: $selection) { ent in
                 Text(ent.name)
             }
@@ -93,7 +104,7 @@ struct ChooseIngredView: View {
                 Button(action: add) {
                     Text("Add")
                         .padding()
-                }.disabled(selection.count == 0)
+                }.disabled(selection.count == 0 || selection.count > 1)
                 
                 Button(action: remove) {
                     Text("Remove")

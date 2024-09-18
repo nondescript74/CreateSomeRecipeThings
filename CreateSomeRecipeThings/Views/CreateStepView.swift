@@ -20,9 +20,20 @@ struct CreateStepView: View {
     
     @State fileprivate var steptext: String = ""
     fileprivate var uuid: UUID
+    @State fileprivate var unit: String = "teaspoon"
+    @State fileprivate var number: Int?
+    
+    fileprivate let volumeUnits: [String] = ["teaspoon", "tablespoon", "cup", "pint", "quart", "gallon", "milliliter", "liter", "ounce", "pound", "gram", "kilogram"]
+    
+    let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumSignificantDigits = 3
+        return formatter
+    }()
     
     fileprivate func addStep() {
-        let myStep = Step(number: stepList.getCountOfSteps() + 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, length: .none)
+        let myStep = Step(number: stepList.getCountOfSteps() + 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: self.uuid)
         stepList.steps.append(myStep)
 #if DEBUG
         print("Steps: ",stepList.steps)
@@ -35,11 +46,9 @@ struct CreateStepView: View {
     
     var body: some View {
         VStack  {
-            TextField("Step description", text: $steptext)
-                .padding()
-                .border(Color.black, width: 1)
-                .padding()
             
+            TextField("Step description", text: $steptext)
+                    .border(Color.black, width: 1)
             
             Button("Add Step") {
                 #if DEBUG

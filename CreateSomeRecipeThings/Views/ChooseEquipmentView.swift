@@ -111,7 +111,6 @@ struct ChooseEquipmentView: View {
         .environmentObject(stepList)
         .environmentObject(selectedEquipmentList)
         .environmentObject(selectedIngredientsList)
-        
     }
 }
 

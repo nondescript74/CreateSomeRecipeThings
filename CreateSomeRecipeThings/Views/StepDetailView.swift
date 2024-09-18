@@ -19,5 +19,5 @@ struct StepDetailView: View {
 }
 
 #Preview {
-    StepDetailView(step: Step(number: 10, step: "My Step", ingredients: [], equipment: [], length: .none))
+    StepDetailView(step: Step(number: 10, step: "My Step", ingredients: [], equipment: [], recipeUUID: .none))
 }

@@ -23,39 +23,30 @@ struct ApplicationView: View {
     }
     var body: some View {
         TabView {
-
-                DisplayStepsView().tabItem {
-                    Image(uiImage: UIImage(systemName: "book")!)
-                    Text(tabs.display.rawValue)
-                }
-                
-                CreateStepView(ruuid: UUID()).tabItem {
-                    Image(uiImage: UIImage(systemName: "list.bullet")!)
-                    Text(tabs.create.rawValue)
-                }
-                
-                ChooseIngredView().tabItem {
-                    Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
-                    Text(tabs.ingredients.rawValue)
-                }
-                
-                ChooseEquipmentView().tabItem {
-                    Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
-                    Text(tabs.equipment.rawValue)
-                }
-                
-    //            CreateVolumeView().tabItem {
-    //                Image(uiImage: UIImage(systemName: "lines.measurement.horizontal")!)
-    //                Text(tabs.length.rawValue)
-    //            }
+            DisplayStepsView().tabItem {
+                Image(uiImage: UIImage(systemName: "book")!)
+                Text(tabs.display.rawValue)
+            }
             
+            CreateStepView(ruuid: UUID()).tabItem {
+                Image(uiImage: UIImage(systemName: "list.bullet")!)
+                Text(tabs.create.rawValue)
+            }
             
-
+            ChooseIngredView().tabItem {
+                Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
+                Text(tabs.ingredients.rawValue)
+            }
+            
+            ChooseEquipmentView().tabItem {
+                Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
+                Text(tabs.equipment.rawValue)
+            }
         }
         .environmentObject(stepList)
         .environmentObject(selectedIngredientsList)
         .environmentObject(selectedEquipmentList)
-
+        
     }
 }
 

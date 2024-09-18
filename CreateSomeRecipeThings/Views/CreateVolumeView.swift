@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CreateVolumeView: View {
+struct CreateAmountView: View {
     
     // MARK: - Environment Variables
     @EnvironmentObject var stepList: StepList
@@ -15,9 +15,9 @@ struct CreateVolumeView: View {
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
     
     @State fileprivate var unit: String = "teaspoon"
-    @State fileprivate var number: Double = 1.00
+    @State fileprivate var number: Double?
     
-    fileprivate let volumeUnits: [String] = ["teaspoon", "tablespoon", "cup", "pint", "quart", "gallon", "milliliter", "liter", "ounce", "pound", "gram", "kilogram"]
+    let volumeUnits: [String] = ["teaspoon", "tablespoon", "cup", "pint", "quart", "gallon", "milliliter", "liter", "ounce", "pound", "gram", "kilogram"]
     
     let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -45,7 +45,7 @@ struct CreateVolumeView: View {
 }
 
 #Preview {
-    CreateVolumeView()
+    CreateAmountView()
         .environmentObject(SelectedEquipmentList())
         .environmentObject(SelectedIngredientsList())
         .environmentObject(StepList())

@@ -58,13 +58,14 @@ struct Step: Codable, Hashable, Comparable {
     let number: Int
     let step: String
     let ingredients, equipment: [Ent]
-    let length: Length?
+    let recipeUUID: UUID?
 }
 
 // MARK: - Ent
 struct Ent: Codable, Hashable {
     let id: Int
     let name, localizedName, image: String
+    let amount: Length?
 }
 
 //struct Ingredient: Codable, Hashable {
@@ -81,6 +82,7 @@ struct Length: Codable, Hashable {
 }
 
 let fluidUnits: [String] = ["milliliter", "liter", "ounce", "fluid ounce", "cup", "pint", "quart", "gallon"]
+let volumeUnits: [String] = ["teaspoon", "tablespoon", "cup", "pint", "quart", "gallon", "milliliter", "liter", "ounce", "pound", "gram", "kilogram"]
 let cuisines: [String] = [
     "African",
     "American",

@@ -23,11 +23,11 @@ struct DisplayStepsView: View {
                     Text("No Steps Found")
                 } else {
                     ForEach(stepList.steps.sorted(), id: \.self) { step in
-                        Text(step.number.description + ". " + step.step )
+                        Text("Step " + step.number.description + ". " + step.step )
+                        #if DEBUG
                         Text(step.ingredients.count.description + " Ingredient(s)")
                         Text(step.equipment.count.description + " Equipment(s)")
-                        Text(selectedIngredientsList.selectedIngredients.count.description)
-                        Text(selectedEquipmentList.selectedEquipment.count.description)
+                        #endif
                     }
                 }
             }

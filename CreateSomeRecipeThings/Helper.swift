@@ -95,4 +95,11 @@ func getRecipesNotesDirUrl() -> URL {
     return notesUrl
 }
 
+let formatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumSignificantDigits = 3
+    return formatter
+}()
+
 
