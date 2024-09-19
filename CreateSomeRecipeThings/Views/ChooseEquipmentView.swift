@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
-
+#endif
 struct ChooseEquipmentView: View {
     
     // MARK: - Environment Variables
