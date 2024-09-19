@@ -29,9 +29,22 @@
 		365646B62C8C9CCE002CD62C /* CreateSomeRecipeThingsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CreateSomeRecipeThingsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		36BE05DE2C9CA82B0029E0B7 /* Exceptions for "CreateSomeRecipeThings" folder in "CreateSomeRecipeThings" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3656469A2C8C9CCD002CD62C /* CreateSomeRecipeThings */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3656469D2C8C9CCD002CD62C /* CreateSomeRecipeThings */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				36BE05DE2C9CA82B0029E0B7 /* Exceptions for "CreateSomeRecipeThings" folder in "CreateSomeRecipeThings" target */,
+			);
 			path = CreateSomeRecipeThings;
 			sourceTree = "<group>";
 		};
@@ -390,12 +403,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CreateSomeRecipeThings/CreateSomeRecipeThings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.0.2.13;
+				CURRENT_PROJECT_VERSION = 2.0.2.14;
 				DEVELOPMENT_ASSET_PATHS = "\"CreateSomeRecipeThings/Preview Content\"";
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CreateSomeRecipeThings/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RecipeArchive;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -432,12 +446,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CreateSomeRecipeThings/CreateSomeRecipeThings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.0.2.13;
+				CURRENT_PROJECT_VERSION = 2.0.2.14;
 				DEVELOPMENT_ASSET_PATHS = "\"CreateSomeRecipeThings/Preview Content\"";
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CreateSomeRecipeThings/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RecipeArchive;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
