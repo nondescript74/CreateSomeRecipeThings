@@ -71,4 +71,22 @@ class StepList: ObservableObject {
             print("Error saving step: \(error)")
         }
     }
+    
+    func deleteStep(step: Step) {
+        let stepsDir = getRecipesStepsDirUrl()
+        let stepFileUrl = stepsDir.appendingPathComponent(step.step.replacingOccurrences(of: " ", with: "_").appending("\(step.number)" + ".json"))
+        do {
+            let data = try Data(contentsOf: stepFileUrl)
+            try data.write(to: stepFileUrl, options: .atomic)
+            try FileManager.default.removeItem(at: stepFileUrl)
+#if DEBUG
+            print("Deleted step: \(step)")
+            print("Deleted step from: \(stepFileUrl)")
+#endif
+        } catch {
+            #if DEBUG
+            print("Error deleting step: \(error)")
+            #endif
+        }
+    }
 }

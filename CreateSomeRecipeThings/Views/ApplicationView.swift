@@ -12,6 +12,7 @@ struct ApplicationView: View {
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
     @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var recipeUUID: CurrentRecipeUUID
     
     // MARK: - Properties
     fileprivate enum tabs: String {
@@ -20,6 +21,7 @@ struct ApplicationView: View {
         case display = "Show"
         case ingredients = "Ingred"
         case equipment = "Equip"
+        case delete = "Delete"
     }
     var body: some View {
         TabView {
@@ -28,7 +30,7 @@ struct ApplicationView: View {
                 Text(tabs.display.rawValue)
             }
             
-            CreateStepView(ruuid: UUID()).tabItem {
+            CreateStepView(ruuid: recipeUUID.uuid).tabItem {
                 Image(uiImage: UIImage(systemName: "list.bullet")!)
                 Text(tabs.create.rawValue)
             }
@@ -42,10 +44,16 @@ struct ApplicationView: View {
                 Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
                 Text(tabs.equipment.rawValue)
             }
+            
+            DeleteStepsView().tabItem {
+                Image(uiImage: UIImage(systemName: "trash")!)
+                Text(tabs.delete.rawValue)
+            }
         }
         .environmentObject(stepList)
         .environmentObject(selectedIngredientsList)
         .environmentObject(selectedEquipmentList)
+        .environmentObject(recipeUUID)
         
     }
 }
@@ -55,4 +63,5 @@ struct ApplicationView: View {
         .environmentObject(SelectedEquipmentList())
         .environmentObject(SelectedIngredientsList())
         .environmentObject(StepList())
+        .environmentObject(CurrentRecipeUUID())
 }

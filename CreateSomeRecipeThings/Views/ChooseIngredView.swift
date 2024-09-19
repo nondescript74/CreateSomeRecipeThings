@@ -49,28 +49,45 @@ struct ChooseIngredView: View {
 #endif
     }
     
+//    private func remove() {
+//        if selection.isEmpty { return }
+//        for eachSel in selection {
+//            if selectedIngredientsList.selectedIngredients.contains(eachSel) {
+//#if DEBUG
+//                print("Removing: \(eachSel)")
+//#endif
+//                selectedIngredientsList.removeIngredient(eachSel)
+//#if DEBUG
+//                print("Removed: \(eachSel)")
+//#endif
+//            } else {
+//#if DEBUG
+//                print("Not Removing: \(eachSel)")
+//                print(eachSel.name, eachSel.id)
+//                print(selectedIngredientsList.selectedIngredients)
+//#endif
+//            }
+//        }
+//    }
+    
     private func remove() {
         if selection.isEmpty { return }
-        for eachSel in selection {
-            if selectedIngredientsList.selectedIngredients.contains(eachSel) {
-                selectedIngredientsList.removeIngredient(eachSel)
 #if DEBUG
-                print("Removed: \(eachSel)")
+        print("Removing: \(selection)")
 #endif
-            }
+        for eachSel in selection {
+            selectedIngredientsList.removeIngredient(eachSel)
         }
     }
     
     private func add() {
         if selection.isEmpty { return }
         for eachSel in selection {
-            if !selectedIngredientsList.selectedIngredients.contains(eachSel) {
+
                 let createIngredientWithAmount = Ingredient(id: eachSel.id, name: eachSel.name, localizedName: eachSel.localizedName, image: eachSel.image, amount: Length(number: number ?? 0, unit: unit))
                 selectedIngredientsList.addIngredient(createIngredientWithAmount)
-#if DEBUG
-                print("Added: ", selectedIngredientsList.selectedIngredients.last!)
-#endif
-            }
+
+
         }
     }
     

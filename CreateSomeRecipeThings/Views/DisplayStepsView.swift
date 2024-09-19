@@ -23,11 +23,24 @@ struct DisplayStepsView: View {
                     Text("No Steps Found")
                 } else {
                     ForEach(stepList.steps.sorted(), id: \.self) { step in
-                        Text("Step " + step.number.description + ". " + step.step )
-                        #if DEBUG
-                        Text(step.ingredients.count.description + " Ingredient(s)")
-                        Text(step.equipment.count.description + " Equipment(s)")
-                        #endif
+                        VStack {
+                            Text("Step " + step.number.description + ". " + step.step )
+                            
+                                ForEach(step.ingredients, id: \.self) { ingredient in
+                                    HStack {
+                                        Text(ingredient.name)
+                                        Text(ingredient.amount?.number.description ?? "")
+                                        Text(ingredient.amount?.unit.description ?? "none")
+                                    }
+                                }
+
+                                
+                            ForEach(step.equipment, id: \.self) { equipment in
+                                Text(equipment.name)
+                                    .background(Color.blue)
+                            }.alignmentGuide(.leading, computeValue: { $0[.trailing] })
+                        }
+
                     }
                 }
             }

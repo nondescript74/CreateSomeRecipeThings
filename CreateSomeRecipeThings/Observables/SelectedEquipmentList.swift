@@ -20,10 +20,19 @@ class SelectedEquipmentList: ObservableObject {
     
     @MainActor
     func addEquipment(_ equipment: Ent) {
-        selectedEquipment.append(equipment)
+        if self.selectedEquipment.contains(where: { $0.id == equipment.id }) { return }
+        self.selectedEquipment.append(equipment)
+#if DEBUG
+        print("Added: ", equipment)
+        print(self.selectedEquipment)
+#endif
     }
     
     func removeEquipment(_ equipment: Ent) {
-        selectedEquipment.removeAll(where: { $0.id == equipment.id })   
+        self.selectedEquipment.removeAll(where: { $0.id == equipment.id })
+#if DEBUG
+        print("Removed: ", equipment)
+        print(self.selectedEquipment)
+#endif
     }
 }

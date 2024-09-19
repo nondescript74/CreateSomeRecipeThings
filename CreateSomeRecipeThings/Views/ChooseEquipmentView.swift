@@ -50,6 +50,9 @@ struct ChooseEquipmentView: View {
     
     private func remove() {
         if selection.isEmpty { return }
+#if DEBUG
+        print(selectedEquipmentList.selectedEquipment)
+#endif
         for eachSel in selection {
             if selectedEquipmentList.selectedEquipment.contains(eachSel) {
                 selectedEquipmentList.selectedEquipment.remove(at: selectedEquipmentList.selectedEquipment.firstIndex(of: eachSel)!)

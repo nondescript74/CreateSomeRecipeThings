@@ -14,14 +14,18 @@ class SelectedIngredientsList: ObservableObject {
     
     init() {
         self.selectedIngredients = []
-        print(self.selectedIngredients)
+#if DEBUG
+        print("selectedIngredients: ", self.selectedIngredients)
+#endif
     }
     
     
     @MainActor
     func addIngredient(_ ingredient: Ingredient) {
+        if self.selectedIngredients.contains(where: { $0.id == ingredient.id }) { return }
         self.selectedIngredients.append(ingredient)
 #if DEBUG
+        print("Added: ", ingredient)
         print(self.selectedIngredients)
 #endif
     }
@@ -29,6 +33,7 @@ class SelectedIngredientsList: ObservableObject {
     func removeIngredient(_ ingredient: Ingredient) {
         self.selectedIngredients.removeAll(where: { $0.id == ingredient.id })
 #if DEBUG
+        print("Removed: ", ingredient)
         print(self.selectedIngredients)
 #endif
     }

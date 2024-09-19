@@ -35,6 +35,9 @@ struct CreateStepView: View {
     fileprivate func addStep() {
         let myStep = Step(number: stepList.getCountOfSteps() + 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: self.uuid)
         stepList.steps.append(myStep)
+        selectedEquipmentList.selectedEquipment.removeAll()
+        selectedIngredientsList.selectedIngredients.removeAll()
+        steptext = ""
 #if DEBUG
         print("Steps: ",stepList.steps)
 #endif
@@ -49,6 +52,7 @@ struct CreateStepView: View {
             
             TextField("Step description", text: $steptext)
                     .border(Color.black, width: 1)
+                    .padding()
             
             Button("Add Step") {
                 #if DEBUG
