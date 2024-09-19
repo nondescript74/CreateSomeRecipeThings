@@ -34,15 +34,12 @@ struct CreateStepView: View {
     
     fileprivate func addStep() {
         let myStep = Step(number: stepList.getCountOfSteps() + 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: self.uuid)
-        stepList.steps.append(myStep)
+        stepList.saveStep(step: myStep)
         selectedEquipmentList.selectedEquipment.removeAll()
         selectedIngredientsList.selectedIngredients.removeAll()
         steptext = ""
 #if DEBUG
         print("Steps: ",stepList.steps)
-#endif
-        stepList.saveStep(step: myStep)
-#if DEBUG
         print("StepList: "," saved a step")
 #endif
     }

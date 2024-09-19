@@ -14,8 +14,13 @@ struct DeleteStepsView: View {
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
     
-    private func deleteStep(offsets: IndexSet) {
-        offsets.forEach { stepList.steps.remove(at: $0) }
+    private func deleteAStep(offsets: IndexSet) {
+        let setOfIndices = offsets.map(\.self)
+        for anIndex in setOfIndices {
+            let aStep = stepList.steps[anIndex]
+            stepList.deleteStep(step: aStep)
+        }
+        
     }
     
     var body: some View {
@@ -26,7 +31,7 @@ struct DeleteStepsView: View {
             
             ForEach(stepList.steps, id: \.self) { step in
                 Text(step.step)
-            }.onDelete(perform: deleteStep)
+            }.onDelete(perform: deleteAStep)
         }
     }
 }

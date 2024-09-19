@@ -58,13 +58,14 @@ class StepList: ObservableObject {
     }
     
     func saveStep(step: Step) {
-        let stepToSave = steps.first(where: { $0.number == step.number })!
+//        let stepToSave = steps.first(where: { $0.number == step.number })!
+        self.steps.append(step)
         let stepsDir = getRecipesStepsDirUrl()
         let stepFileUrl = stepsDir.appendingPathComponent(step.step.replacingOccurrences(of: " ", with: "_").appending("\(step.number)" + ".json"))
         do {
-            try JSONEncoder().encode(stepToSave).write(to: stepFileUrl)
+            try JSONEncoder().encode(step).write(to: stepFileUrl)
 #if DEBUG
-            print("Saved step: \(stepToSave)")
+            print("Saved step: \(step)")
             print("Saved step to: \(stepFileUrl)")
 #endif
         } catch {
@@ -73,6 +74,11 @@ class StepList: ObservableObject {
     }
     
     func deleteStep(step: Step) {
+        self.steps.removeAll(where: { $0.number == step.number })
+        deleteStepInStorage(step: step)
+    }
+    
+    fileprivate func deleteStepInStorage(step: Step) {
         let stepsDir = getRecipesStepsDirUrl()
         let stepFileUrl = stepsDir.appendingPathComponent(step.step.replacingOccurrences(of: " ", with: "_").appending("\(step.number)" + ".json"))
         do {
