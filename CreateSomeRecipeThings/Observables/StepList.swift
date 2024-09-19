@@ -53,12 +53,12 @@ class StepList: ObservableObject {
     
     @MainActor
     
-    func getCountOfSteps() -> Int {
-        return steps.count
+    func getNextStepIDToUse() -> Int {
+        let nextnum = steps.max(by: { $0.number < $1.number })?.number ?? 0 + 1
+        return nextnum + 1
     }
     
     func saveStep(step: Step) {
-//        let stepToSave = steps.first(where: { $0.number == step.number })!
         self.steps.append(step)
         let stepsDir = getRecipesStepsDirUrl()
         let stepFileUrl = stepsDir.appendingPathComponent(step.step.replacingOccurrences(of: " ", with: "_").appending("\(step.number)" + ".json"))
@@ -74,8 +74,40 @@ class StepList: ObservableObject {
     }
     
     func deleteStep(step: Step) {
-        self.steps.removeAll(where: { $0.number == step.number })
         deleteStepInStorage(step: step)
+    }
+    
+    func upDateSteps() {
+        do  {
+            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesStepsDirUrl().path)
+#if DEBUG
+            print("Update steps, Contents", contents)
+#endif
+            if contents.isEmpty {
+#if DEBUG
+                print("Update Steps, Contents Empty")
+#endif
+                steps = []
+            } else {
+                let fileUrl = getRecipesStepsDirUrl()
+#if DEBUG
+                print("Update Steps, Steps url: ", fileUrl)
+#endif
+                for aurl in contents {
+                    let url = fileUrl.appendingPathComponent(aurl)
+#if DEBUG
+                    print("Update Steps, Step url: ", url)
+#endif
+                    let astep = try JSONDecoder().decode(Step.self, from: try! Data(contentsOf: url))
+                    steps.append(astep)
+                }
+            }
+        } catch {
+#if DEBUG
+            print("not able to read steps")
+#endif
+            self.steps = []
+        }
     }
     
     fileprivate func deleteStepInStorage(step: Step) {

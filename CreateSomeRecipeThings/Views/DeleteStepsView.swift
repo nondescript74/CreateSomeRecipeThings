@@ -20,7 +20,8 @@ struct DeleteStepsView: View {
             let aStep = stepList.steps[anIndex]
             stepList.deleteStep(step: aStep)
         }
-        
+        stepList.steps.removeAll()
+        stepList.upDateSteps()
     }
     
     var body: some View {

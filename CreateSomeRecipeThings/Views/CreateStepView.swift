@@ -33,7 +33,7 @@ struct CreateStepView: View {
     }()
     
     fileprivate func addStep() {
-        let myStep = Step(number: stepList.getCountOfSteps() + 1, step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: self.uuid)
+        let myStep = Step(number: stepList.getNextStepIDToUse(), step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: self.uuid)
         stepList.saveStep(step: myStep)
         selectedEquipmentList.selectedEquipment.removeAll()
         selectedIngredientsList.selectedIngredients.removeAll()
