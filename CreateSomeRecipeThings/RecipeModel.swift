@@ -9,36 +9,37 @@ import Foundation
 import SwiftUI
 
 // MARK: - Arecipe
-struct Arecipe {
-    let vegetarian, vegan, glutenFree, dairyFree: Bool
-    let veryHealthy, cheap, veryPopular, sustainable: Bool
-    let weightWatcherSmartPoints: Int
-    let gaps: String
-    let lowFodmap: Bool
-    let preparationMinutes, cookingMinutes, aggregateLikes, spoonacularScore: Int
-    let healthScore, pricePerServing: Int
-    let extendedIngredients: [ExtendedIngredient]
-    let id: Int
+struct Arecipe: Codable, Identifiable, Hashable {
+    let vegetarian, vegan, glutenFree, dairyFree: Bool?
+    let veryHealthy, cheap, veryPopular, sustainable: Bool?
+    let weightWatcherSmartPoints: Int?
+    let gaps: String?
+    let lowFodmap: Bool?
+    let preparationMinutes, cookingMinutes, aggregateLikes, spoonacularScore: Int?
+    let healthScore, pricePerServing: Int?
+    let extendedIngredients: [ExtendedIngredient?]
+    let id: Int?
     let title: String
-    let readyInMinutes: Int
-    let sourceURL: String
-    let image: String
-    let imageType: String
-    let summary: NSNull
-    let cuisines: [String]
-    let dishTypes: [Any?]
-    let diets: [String]
-    let occasions: [Any?]
-    let instructions: String
-    let analyzedInstructions: [AnalyzedInstruction]
-    let sourceName, creditsText, originalID: NSNull
+    let readyInMinutes: Int?
+    let sourceURL: String?
+    let image: String?
+    let imageType: String?
+    let summary: String
+    let cuisines: [String?]
+    let dishTypes: [String?]
+    let diets: [String?]
+    let occasions: [String?]
+    let instructions: String?
+    let analyzedInstructions: [AnalyzedInstruction?]
+    let sourceName, creditsText, originalID: String?
     let recipeUUID: UUID?
 }
 
 // MARK: - AnalyzedInstruction
-struct AnalyzedInstruction {
+struct AnalyzedInstruction: Codable, Equatable, Identifiable, Hashable {
     let name: String
     let steps: [Step]
+    var id: UUID = UUID()
 }
 
 // MARK: - Step
@@ -58,7 +59,7 @@ struct Step: Codable, Hashable, Comparable {
     let number: Int
     let step: String
     let ingredients, equipment: [Ent]
-    let recipeUUID: UUID?
+    let recipeUUID: UUID
 }
 
 // MARK: - Ent
@@ -121,7 +122,7 @@ let recipeStepsFolderName = "RecipeSteps"
 
 
 // MARK: - ExtendedIngredient
-struct ExtendedIngredient {
+struct ExtendedIngredient: Codable, Equatable, Identifiable, Hashable {
     let id: Int
     let aisle, image: String
     let consistency: Consistency
@@ -132,18 +133,19 @@ struct ExtendedIngredient {
     let measures: Measures
 }
 
-enum Consistency: String {
+enum Consistency: Codable, Equatable {
     case liquid
     case solid
 }
 
 // MARK: - Measures
-struct Measures {
+struct Measures: Codable, Equatable, Hashable {
     let us, metric: Metric
 }
 
 // MARK: - Metric
-struct Metric {
+struct Metric: Codable, Equatable, Identifiable, Hashable {
+    var id: UUID = UUID()
     let amount: Double
     let unitShort, unitLong: String
 }

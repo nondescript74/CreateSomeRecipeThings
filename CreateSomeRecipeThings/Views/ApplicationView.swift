@@ -12,38 +12,43 @@ struct ApplicationView: View {
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
     @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var recipeUUID: CurrentRecipeUUID
-    
+    @EnvironmentObject var userRecipes: UserRecipes
     // MARK: - Properties
     fileprivate enum tabs: String {
         case create = "Create"
         case length = "Length"
         case display = "Show"
+        case select = "Recipe"
         case ingredients = "Ingred"
         case equipment = "Equip"
         case delete = "Delete"
     }
     var body: some View {
         TabView {
+            SelectCurrentRecipeView().tabItem {
+                Image(uiImage: UIImage(systemName: "square.and.arrow.down")!)
+                Text(tabs.select.rawValue)
+            }
+            
             DisplayStepsView().tabItem {
                 Image(uiImage: UIImage(systemName: "book")!)
                 Text(tabs.display.rawValue)
             }
             
-            CreateStepView(ruuid: recipeUUID.uuid).tabItem {
+            CreateStepView().tabItem {
                 Image(uiImage: UIImage(systemName: "list.bullet")!)
                 Text(tabs.create.rawValue)
             }
-            
-            ChooseIngredView().tabItem {
-                Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
-                Text(tabs.ingredients.rawValue)
-            }
-            
-            ChooseEquipmentView().tabItem {
-                Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
-                Text(tabs.equipment.rawValue)
-            }
+//            
+//            ChooseIngredView().tabItem {
+//                Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
+//                Text(tabs.ingredients.rawValue)
+//            }
+//            
+//            ChooseEquipmentView().tabItem {
+//                Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
+//                Text(tabs.equipment.rawValue)
+//            }
             
             DeleteStepsView().tabItem {
                 Image(uiImage: UIImage(systemName: "trash")!)
@@ -53,7 +58,7 @@ struct ApplicationView: View {
         .environmentObject(stepList)
         .environmentObject(selectedIngredientsList)
         .environmentObject(selectedEquipmentList)
-        .environmentObject(recipeUUID)
+        .environmentObject(userRecipes)
         
     }
 }
@@ -63,5 +68,5 @@ struct ApplicationView: View {
         .environmentObject(SelectedEquipmentList())
         .environmentObject(SelectedIngredientsList())
         .environmentObject(StepList())
-        .environmentObject(CurrentRecipeUUID())
+        .environmentObject(UserRecipes())
 }

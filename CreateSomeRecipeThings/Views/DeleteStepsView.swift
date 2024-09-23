@@ -10,9 +10,10 @@ import SwiftUI
 struct DeleteStepsView: View {
     
     // MARK: - Environment Variables
-    @EnvironmentObject var stepList: StepList
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var userRecipes: UserRecipes
     
     private func deleteAStep(offsets: IndexSet) {
         let setOfIndices = offsets.map(\.self)
@@ -25,18 +26,23 @@ struct DeleteStepsView: View {
     }
     
     var body: some View {
-        List {
+        VStack {
             Text("Delete Steps")
                 .font(.headline)
                 .padding()
-            
-            ForEach(stepList.steps, id: \.self) { step in
-                Text(step.step)
-            }.onDelete(perform: deleteAStep)
+            List {
+                ForEach(stepList.steps.sorted(), id: \.self) { step in
+                    Text(step.number.description + " " + step.step)
+                }.onDelete(perform: deleteAStep)
+            }
         }
     }
 }
 
 #Preview {
     DeleteStepsView()
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(StepList())
+        .environmentObject(UserRecipes())
 }

@@ -10,9 +10,10 @@ import SwiftUI
 
 class StepList: ObservableObject {
     
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
+    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
     @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var userRecipes: UserRecipes
     
     // MARK: - Publisher
     @Published var steps: [Step] = []

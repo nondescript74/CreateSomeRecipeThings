@@ -10,9 +10,10 @@ import SwiftUI
 struct CreateSomethingView: View {
     
     // MARK: - Environment Variables
-    @EnvironmentObject var stepList: StepList
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var userRecipes: UserRecipes
     
     init (someenum: SomeEnum, recipeuuid: UUID, payload: Any) {
         self.someVariable = someenum
@@ -107,4 +108,5 @@ struct CreateSomethingView: View {
         .environmentObject(SelectedEquipmentList())
         .environmentObject(SelectedIngredientsList())
         .environmentObject(StepList())
+        .environmentObject(UserRecipes())
 }

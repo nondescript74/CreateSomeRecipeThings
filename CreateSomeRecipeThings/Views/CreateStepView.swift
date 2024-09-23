@@ -12,14 +12,10 @@ struct CreateStepView: View {
     @EnvironmentObject var stepList: StepList
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-
-    init(ruuid: UUID) {
-        // must link to recipe
-        self.uuid = ruuid
-    }
+    @EnvironmentObject var userRecipes: UserRecipes
+    
     
     @State fileprivate var steptext: String = ""
-    fileprivate var uuid: UUID
     @State fileprivate var unit: String = "teaspoon"
     @State fileprivate var number: Int?
     
@@ -33,29 +29,41 @@ struct CreateStepView: View {
     }()
     
     fileprivate func addStep() {
-        let myStep = Step(number: stepList.getNextStepIDToUse(), step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: self.uuid)
-        stepList.saveStep(step: myStep)
-        selectedEquipmentList.selectedEquipment.removeAll()
-        selectedIngredientsList.selectedIngredients.removeAll()
-        steptext = ""
+        guard !steptext.isEmpty else { return }
+        
+        if userRecipes.currentRecipe.recipeUUID == nil  {
 #if DEBUG
-        print("Steps: ",stepList.steps)
-        print("StepList: "," saved a step")
+            print("currentRecipe.recipeUUID is nil")
+            return
 #endif
+        } else {
+            let myUUID =  userRecipes.currentRecipe.recipeUUID
+
+            let myStep = Step(number: stepList.getNextStepIDToUse(), step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: myUUID!)
+            stepList.saveStep(step: myStep)
+            selectedEquipmentList.selectedEquipment.removeAll()
+            selectedIngredientsList.selectedIngredients.removeAll()
+            steptext = ""
+#if DEBUG
+            print("Steps: ",stepList.steps)
+            print("StepList: "," saved a step")
+#endif
+            
+        }
     }
     
     var body: some View {
         VStack  {
             
             TextField("Step description", text: $steptext)
-                    .border(Color.black, width: 1)
-                    .padding()
+                .border(Color.black, width: 1)
+                .padding()
             
             Button("Add Step") {
-                #if DEBUG
+#if DEBUG
                 print("selectedIngredientsList.selectedIngredients.count ", selectedIngredientsList.selectedIngredients.count.description)
                 print("selectedEquipmentList.selectedEquipment.count", selectedEquipmentList.selectedEquipment.count.description)
-                #endif
+#endif
                 addStep()
             }
         }
@@ -66,8 +74,9 @@ struct CreateStepView: View {
 }
 
 #Preview {
-    CreateStepView(ruuid: UUID())
+    CreateStepView()
         .environmentObject(SelectedEquipmentList())
         .environmentObject(SelectedIngredientsList())
         .environmentObject(StepList())
+        .environmentObject(UserRecipes())
 }

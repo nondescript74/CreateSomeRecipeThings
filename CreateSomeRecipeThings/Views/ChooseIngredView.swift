@@ -12,9 +12,10 @@ import UIKit
 
 struct ChooseIngredView: View {
     // MARK: - Environment Variables
-    @EnvironmentObject var stepList: StepList
     @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
     @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
+    @EnvironmentObject var stepList: StepList
+    @EnvironmentObject var userRecipes: UserRecipes
     
     @State private var searchText: String = ""
     @State private var filteredIngredients: [Ingredient] = []
@@ -153,4 +154,5 @@ struct ChooseIngredView: View {
         .environmentObject(SelectedEquipmentList())
         .environmentObject(SelectedIngredientsList())
         .environmentObject(StepList())
+        .environmentObject(UserRecipes())
 }
