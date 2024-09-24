@@ -22,6 +22,15 @@ struct SelectCurrentRecipeView: View {
         self.selectedRecipe = nil
     }
     
+    private func saveRecipe() {
+        guard let selectedRecipe else { return }
+        userRecipes.addRecipe(selectedRecipe)
+        userRecipes.currentRecipe = selectedRecipe
+#if DEBUG
+        print("Selected Recipe: \(selectedRecipe.title)")
+#endif
+    }
+    
     var body: some View {
         VStack {
             Text("Select the current recipe")
@@ -47,6 +56,14 @@ struct SelectCurrentRecipeView: View {
                 
                 Text("Selected Recipe is: " +  (selectedRecipe?.title ?? "None"))
                     .disabled(selectedRecipe == nil)
+                    .padding()
+                Button("Save") {
+                    
+#if DEBUG
+                    print("Saving Recipe: \(selectedRecipe?.title ?? "None")")
+#endif
+                    saveRecipe()
+                }
             }
         }
     }

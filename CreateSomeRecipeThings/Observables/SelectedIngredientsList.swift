@@ -15,7 +15,7 @@ class SelectedIngredientsList: ObservableObject {
     init() {
         self.selectedIngredients = []
 #if DEBUG
-        print("selectedIngredients: ", self.selectedIngredients)
+        print("Initialized:", self.selectedIngredients)
 #endif
     }
     

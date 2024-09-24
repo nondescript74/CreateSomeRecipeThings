@@ -18,6 +18,7 @@ struct CreateStepView: View {
     @State fileprivate var steptext: String = ""
     @State fileprivate var unit: String = "teaspoon"
     @State fileprivate var number: Int?
+    @State fileprivate var analyInstruction: AnalyzedInstruction = AnalyzedInstruction()
     
     fileprivate let volumeUnits: [String] = ["teaspoon", "tablespoon", "cup", "pint", "quart", "gallon", "milliliter", "liter", "ounce", "pound", "gram", "kilogram"]
     
@@ -38,7 +39,10 @@ struct CreateStepView: View {
 #endif
         } else {
             let myUUID =  userRecipes.currentRecipe.recipeUUID
-
+#if DEBUG
+            print("currentRecipe.recipeUUID: ", userRecipes.currentRecipe.recipeUUID!)
+#endif
+            
             let myStep = Step(number: stepList.getNextStepIDToUse(), step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: myUUID!)
             stepList.saveStep(step: myStep)
             selectedEquipmentList.selectedEquipment.removeAll()
@@ -52,20 +56,89 @@ struct CreateStepView: View {
         }
     }
     
+    fileprivate func addInstruction() {
+        guard !analyInstruction.name.isEmpty else { return }
+        
+        if userRecipes.currentRecipe.recipeUUID == nil  {
+#if DEBUG
+            print("currentRecipe.recipeUUID is nil")
+            return
+#endif
+        } else {
+#if DEBUG
+            print("currentRecipe.recipeUUID: ", userRecipes.currentRecipe.recipeUUID!)
+#endif
+            
+            let myInstruction = AnalyzedInstruction(name: analyInstruction.name, steps: stepList.steps, id: userRecipes.currentRecipe.recipeUUID!)
+        }
+    }
+    
+    private func deleteStep(offsets: IndexSet) {
+        let setOfIndices = offsets.map(\.self)
+        for anIndex in setOfIndices {
+            let aStep = stepList.steps[anIndex]
+            stepList.deleteStep(step: aStep)
+        }
+        stepList.steps.removeAll()
+        stepList.upDateSteps()
+    }
+    
+    
     var body: some View {
         VStack  {
             
-            TextField("Step description", text: $steptext)
+            TextField("Instruction description", text: $analyInstruction.name)
                 .border(Color.black, width: 1)
                 .padding()
             
-            Button("Add Step") {
+            Divider()
+            
+            VStack  {
+                Text("Steps already created").font(.headline)
+                List {
+                    if stepList.steps.isEmpty {
+                        Text("No Steps Found")
+                    } else {
+                        ForEach(stepList.steps.sorted(), id: \.self) { step in
+                            VStack {
+                                Text("Step " + step.number.description + ". " + step.step )
+                            }
+                            
+                        }.onDelete(perform: deleteStep)
+                    }
+                }
+                
+                
+                
+                Button("Add all steps to instruction") {
+                    analyInstruction.steps.append(contentsOf: stepList.steps)
 #if DEBUG
-                print("selectedIngredientsList.selectedIngredients.count ", selectedIngredientsList.selectedIngredients.count.description)
-                print("selectedEquipmentList.selectedEquipment.count", selectedEquipmentList.selectedEquipment.count.description)
+                    print("Added all steps to: ", analyInstruction.name)
 #endif
-                addStep()
+                    stepList.steps.removeAll()
+#if DEBUG
+                    print("Removed all created steps")
+#endif
+                    userRecipes.currentRecipe.analyzedInstructions.append(analyInstruction)
+#if DEBUG
+                    print("Added analyzed instruction to user recipe")
+#endif
+                }
+                .padding()
+                .disabled(analyInstruction.name == "Please provide an instruction name")
+                Button("Add Instruction with created steps") {
+#if DEBUG
+                    print("selectedIngredientsList.selectedIngredients.count ", selectedIngredientsList.selectedIngredients.count.description)
+                    print("selectedEquipmentList.selectedEquipment.count ", selectedEquipmentList.selectedEquipment.count.description)
+                    print("stepList.steps.count ",stepList.steps.count.description)
+#endif
+                    addInstruction()
+                }
+                .padding()
+                .disabled(analyInstruction.name == "Please provide an instruction name")
             }
+            
+            
         }
         .environmentObject(selectedEquipmentList)
         .environmentObject(selectedIngredientsList)

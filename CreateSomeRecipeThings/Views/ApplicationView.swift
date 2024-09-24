@@ -30,11 +30,6 @@ struct ApplicationView: View {
                 Text(tabs.select.rawValue)
             }
             
-            DisplayStepsView().tabItem {
-                Image(uiImage: UIImage(systemName: "book")!)
-                Text(tabs.display.rawValue)
-            }
-            
             CreateStepView().tabItem {
                 Image(uiImage: UIImage(systemName: "list.bullet")!)
                 Text(tabs.create.rawValue)

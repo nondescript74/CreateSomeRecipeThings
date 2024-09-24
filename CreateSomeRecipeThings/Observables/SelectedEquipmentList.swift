@@ -15,6 +15,9 @@ class SelectedEquipmentList: ObservableObject {
     
     init() {
         self.selectedEquipment = []
+#if DEBUG
+        print("Initialized: ", self.selectedEquipment)
+#endif
     }
     
     

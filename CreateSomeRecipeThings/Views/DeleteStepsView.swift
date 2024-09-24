@@ -35,6 +35,10 @@ struct DeleteStepsView: View {
                     Text(step.number.description + " " + step.step)
                 }.onDelete(perform: deleteAStep)
             }
+            
+            Button("Remove all steps") {
+                stepList.steps.removeAll()
+            }
         }
     }
 }

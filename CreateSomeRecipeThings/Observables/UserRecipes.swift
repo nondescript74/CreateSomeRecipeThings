@@ -7,7 +7,7 @@
 
 import Foundation
 
-@MainActor final class UserRecipes: ObservableObject {
+final class UserRecipes: ObservableObject {
     @Published var userrecipes: [Arecipe] = []
     @Published var currentRecipe: Arecipe = sampleRecipe
     
@@ -63,15 +63,19 @@ import Foundation
         }
     }
     
+    @MainActor
     func addRecipe(_ arecipe: Arecipe) {
         if userrecipes.contains(where: { $0.id == arecipe.id }) {
 #if DEBUG
-            print("Recipe already exists, not adding")
-            return
+            print("Recipe already exists, removing it")
 #endif
+            self.userrecipes.removeAll(where: { $0.id == arecipe.id })
         }
         self.userrecipes.append(arecipe)
         self.currentRecipe = arecipe
+#if DEBUG
+        print("Added recipe: ", arecipe.title)
+#endif
     }
     
     func removeRecipe(_ arecipe: Arecipe) {
