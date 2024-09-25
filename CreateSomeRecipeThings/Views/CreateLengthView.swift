@@ -10,10 +10,7 @@ import SwiftUI
 struct CreateLengthView: View {
     
     // MARK: - Environment Variables
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var userRecipes: UserRecipes
+    @EnvironmentObject var userData: UserData
     
     @State fileprivate var unit: String = "centimeter"
     @State fileprivate var number: Double = 1.00
@@ -34,16 +31,11 @@ struct CreateLengthView: View {
             }
         }
         
-        .environmentObject(stepList)
-        .environmentObject(selectedEquipmentList)
-        .environmentObject(selectedIngredientsList)
+        .environmentObject(userData)
     }
 }
 
 #Preview {
     CreateLengthView()
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }

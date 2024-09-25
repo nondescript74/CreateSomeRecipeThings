@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AnalyzedInstructionList: Observable {
+class AnalyzedInstructionList: ObservableObject {
     
     @Published var instructions: [AnalyzedInstruction]
     
@@ -15,6 +15,24 @@ class AnalyzedInstructionList: Observable {
         self.instructions = []
 #if DEBUG
         print("Initialized: ", self.instructions)
+#endif
+    }
+    
+    @MainActor
+    func add(_ instruction: AnalyzedInstruction) {
+        if self.instructions.contains(where: { $0.id == instruction.id }) {
+            remove(instruction)
+        }
+        self.instructions.append(instruction)
+#if DEBUG
+        print("Added: ", self.instructions)
+#endif
+    }
+    
+    func remove(_ instruction: AnalyzedInstruction) {
+        self.instructions.removeAll(where: { $0.id == instruction.id })
+#if DEBUG
+        print("Removed: ", self.instructions)
 #endif
     }
 }

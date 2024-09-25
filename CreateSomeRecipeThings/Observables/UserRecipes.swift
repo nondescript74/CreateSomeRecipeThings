@@ -11,7 +11,6 @@ final class UserRecipes: ObservableObject {
     @Published var userrecipes: [Arecipe] = []
     @Published var currentRecipe: Arecipe = sampleRecipe
     
-    
     init() {
         do  {
             let reczipesDir = try FileManager.default.contentsOfDirectory(atPath: getReczipesFolderUrl().path)

@@ -10,10 +10,7 @@ import SwiftUI
 struct CreateSomethingView: View {
     
     // MARK: - Environment Variables
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var userRecipes: UserRecipes
+    @EnvironmentObject var userData: UserData
     
     init (someenum: SomeEnum, recipeuuid: UUID, payload: Any) {
         self.someVariable = someenum
@@ -105,8 +102,5 @@ struct CreateSomethingView: View {
 #Preview {
     // create the preview with correct payload
     CreateSomethingView(someenum: .metric, recipeuuid: UUID(), payload: Length(number: 1, unit: "centimeter"))
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }

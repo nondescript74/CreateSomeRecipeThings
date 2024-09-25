@@ -12,10 +12,7 @@ import UIKit
 
 struct ChooseIngredView: View {
     // MARK: - Environment Variables
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var userRecipes: UserRecipes
+    @EnvironmentObject var userData: UserData
     
     @State private var searchText: String = ""
     @State private var filteredIngredients: [Ingredient] = []
@@ -52,45 +49,26 @@ struct ChooseIngredView: View {
 #endif
     }
     
-//    private func remove() {
-//        if selection.isEmpty { return }
-//        for eachSel in selection {
-//            if selectedIngredientsList.selectedIngredients.contains(eachSel) {
-//#if DEBUG
-//                print("Removing: \(eachSel)")
-//#endif
-//                selectedIngredientsList.removeIngredient(eachSel)
-//#if DEBUG
-//                print("Removed: \(eachSel)")
-//#endif
-//            } else {
-//#if DEBUG
-//                print("Not Removing: \(eachSel)")
-//                print(eachSel.name, eachSel.id)
-//                print(selectedIngredientsList.selectedIngredients)
-//#endif
-//            }
-//        }
-//    }
-    
     private func remove() {
         if selection.isEmpty { return }
 #if DEBUG
         print("Removing: \(selection)")
 #endif
         for eachSel in selection {
-            selectedIngredientsList.removeIngredient(eachSel)
+            userData.selectedIngredList.removeIngredient(eachSel)
         }
     }
     
     private func add() {
         if selection.isEmpty { return }
         for eachSel in selection {
-
-                let createIngredientWithAmount = Ingredient(id: eachSel.id, name: eachSel.name, localizedName: eachSel.localizedName, image: eachSel.image, amount: Length(number: number ?? 0, unit: unit))
-                selectedIngredientsList.addIngredient(createIngredientWithAmount)
-
-
+            
+            let createIngredientWithAmount = Ingredient(id: eachSel.id, name: eachSel.name, localizedName: eachSel.localizedName, image: eachSel.image, amount: Length(number: number ?? 0, unit: unit))
+            userData.selectedIngredList.addIngredient(createIngredientWithAmount)
+#if DEBUG
+            print("Added: \(createIngredientWithAmount)")
+#endif
+            
         }
     }
     
@@ -131,19 +109,18 @@ struct ChooseIngredView: View {
                         .padding()
                 }.disabled(selection.count == 0)
             }
-
-            List(selectedIngredientsList.selectedIngredients, id: \.self) { ingred in
+            
+            List(userData.selectedIngredList.selectedIngredients, id: \.self) { ingred in
                 Text(ingred.name)
             }
             
             .navigationTitle("Choose Ingredients")
-//            .toolbar {
-//                EditButton()
-//            }
+            //            .toolbar {
+            //                EditButton()
+            //            }
         }
-        .environmentObject(stepList)
-        .environmentObject(selectedEquipmentList)
-        .environmentObject(selectedIngredientsList)
+        .environmentObject(userData)
+        
         
     }
     
@@ -151,8 +128,5 @@ struct ChooseIngredView: View {
 
 #Preview {
     ChooseIngredView()
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }

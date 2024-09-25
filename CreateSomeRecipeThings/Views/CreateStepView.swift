@@ -9,10 +9,7 @@ import SwiftUI
 
 struct CreateStepView: View {
     // MARK: - Environment Variables
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var userRecipes: UserRecipes
+    @EnvironmentObject var userData: UserData
     
     
     @State fileprivate var steptext: String = ""
@@ -32,24 +29,24 @@ struct CreateStepView: View {
     fileprivate func addStep() {
         guard !steptext.isEmpty else { return }
         
-        if userRecipes.currentRecipe.recipeUUID == nil  {
+        if userData.userRecipes.currentRecipe.recipeUUID == nil  {
 #if DEBUG
             print("currentRecipe.recipeUUID is nil")
             return
 #endif
         } else {
-            let myUUID =  userRecipes.currentRecipe.recipeUUID
+            let myUUID =  userData.userRecipes.currentRecipe.recipeUUID
 #if DEBUG
-            print("currentRecipe.recipeUUID: ", userRecipes.currentRecipe.recipeUUID!)
+            print("currentRecipe.recipeUUID: ", userData.userRecipes.currentRecipe.recipeUUID!)
 #endif
             
-            let myStep = Step(number: stepList.getNextStepIDToUse(), step: steptext, ingredients: selectedIngredientsList.selectedIngredients, equipment: selectedEquipmentList.selectedEquipment, recipeUUID: myUUID!)
-            stepList.saveStep(step: myStep)
-            selectedEquipmentList.selectedEquipment.removeAll()
-            selectedIngredientsList.selectedIngredients.removeAll()
+            let myStep = Step(number: userData.stepList.getNextStepIDToUse(), step: steptext, ingredients: userData.selectedIngredList.selectedIngredients, equipment: userData.selectedEquipList.selectedEquipment, recipeUUID: myUUID!)
+            userData.stepList.saveStep(step: myStep)
+            userData.selectedEquipList.selectedEquipment.removeAll()
+            userData.selectedIngredList.selectedIngredients.removeAll()
             steptext = ""
 #if DEBUG
-            print("Steps: ",stepList.steps)
+            print("Steps: ",userData.stepList.steps)
             print("StepList: "," saved a step")
 #endif
             
@@ -59,28 +56,28 @@ struct CreateStepView: View {
     fileprivate func addInstruction() {
         guard !analyInstruction.name.isEmpty else { return }
         
-        if userRecipes.currentRecipe.recipeUUID == nil  {
+        if userData.userRecipes.currentRecipe.recipeUUID == nil  {
 #if DEBUG
             print("currentRecipe.recipeUUID is nil")
             return
 #endif
         } else {
 #if DEBUG
-            print("currentRecipe.recipeUUID: ", userRecipes.currentRecipe.recipeUUID!)
+            print("currentRecipe.recipeUUID: ", userData.userRecipes.currentRecipe.recipeUUID!)
 #endif
             
-            let myInstruction = AnalyzedInstruction(name: analyInstruction.name, steps: stepList.steps, id: userRecipes.currentRecipe.recipeUUID!)
+            let myInstruction = AnalyzedInstruction(name: analyInstruction.name, steps: userData.stepList.steps, id: userData.userRecipes.currentRecipe.recipeUUID!)
         }
     }
     
     private func deleteStep(offsets: IndexSet) {
         let setOfIndices = offsets.map(\.self)
         for anIndex in setOfIndices {
-            let aStep = stepList.steps[anIndex]
-            stepList.deleteStep(step: aStep)
+            let aStep = userData.stepList.steps[anIndex]
+            userData.stepList.deleteStep(step: aStep)
         }
-        stepList.steps.removeAll()
-        stepList.upDateSteps()
+        userData.stepList.steps.removeAll()
+        userData.stepList.upDateSteps()
     }
     
     
@@ -96,10 +93,10 @@ struct CreateStepView: View {
             VStack  {
                 Text("Steps already created").font(.headline)
                 List {
-                    if stepList.steps.isEmpty {
+                    if userData.stepList.steps.isEmpty {
                         Text("No Steps Found")
                     } else {
-                        ForEach(stepList.steps.sorted(), id: \.self) { step in
+                        ForEach(userData.stepList.steps.sorted(), id: \.self) { step in
                             VStack {
                                 Text("Step " + step.number.description + ". " + step.step )
                             }
@@ -111,15 +108,15 @@ struct CreateStepView: View {
                 
                 
                 Button("Add all steps to instruction") {
-                    analyInstruction.steps.append(contentsOf: stepList.steps)
+                    analyInstruction.steps.append(contentsOf: userData.stepList.steps)
 #if DEBUG
                     print("Added all steps to: ", analyInstruction.name)
 #endif
-                    stepList.steps.removeAll()
+                    userData.stepList.steps.removeAll()
 #if DEBUG
                     print("Removed all created steps")
 #endif
-                    userRecipes.currentRecipe.analyzedInstructions.append(analyInstruction)
+                    userData.userRecipes.currentRecipe.analyzedInstructions.append(analyInstruction)
 #if DEBUG
                     print("Added analyzed instruction to user recipe")
 #endif
@@ -128,9 +125,9 @@ struct CreateStepView: View {
                 .disabled(analyInstruction.name == "Please provide an instruction name")
                 Button("Add Instruction with created steps") {
 #if DEBUG
-                    print("selectedIngredientsList.selectedIngredients.count ", selectedIngredientsList.selectedIngredients.count.description)
-                    print("selectedEquipmentList.selectedEquipment.count ", selectedEquipmentList.selectedEquipment.count.description)
-                    print("stepList.steps.count ",stepList.steps.count.description)
+                    print("selectedIngredientsList.selectedIngredients.count ", userData.selectedIngredList.selectedIngredients.count.description)
+                    print("selectedEquipmentList.selectedEquipment.count ", userData.selectedEquipList.selectedEquipment.count.description)
+                    print("stepList.steps.count ", userData.stepList.steps.count.description)
 #endif
                     addInstruction()
                 }
@@ -140,16 +137,11 @@ struct CreateStepView: View {
             
             
         }
-        .environmentObject(selectedEquipmentList)
-        .environmentObject(selectedIngredientsList)
-        .environmentObject(stepList)
+        .environmentObject(userData)
     }
 }
 
 #Preview {
     CreateStepView()
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }

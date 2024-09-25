@@ -10,22 +10,26 @@ import SwiftUI
 struct SelectCurrentRecipeView: View {
     
     // MARK: - Environment Variables
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var userRecipes: UserRecipes
-    
+    @EnvironmentObject var userData: UserData
+    // MARK: - State
     @State var selectedRecipe: Arecipe?
     
+    
+    init() {
+#if DEBUG
+        print("Initializing SelectCurrentRecipeView")
+#endif
+        UITextField.appearance().clearButtonMode = .whileEditing
+    }
     func deleteUserRecipe(at offsets: IndexSet) {
-        userRecipes.userrecipes.remove(atOffsets: offsets)
+        userData.userRecipes.userrecipes.remove(atOffsets: offsets)
         self.selectedRecipe = nil
     }
     
     private func saveRecipe() {
         guard let selectedRecipe else { return }
-        userRecipes.addRecipe(selectedRecipe)
-        userRecipes.currentRecipe = selectedRecipe
+        userData.userRecipes.addRecipe(selectedRecipe)
+        userData.userRecipes.currentRecipe = selectedRecipe
 #if DEBUG
         print("Selected Recipe: \(selectedRecipe.title)")
 #endif
@@ -37,21 +41,21 @@ struct SelectCurrentRecipeView: View {
                 .font(.title)
             
             VStack {
-                Text("No user recipes yet, create one!").disabled(userRecipes.userrecipes.count > 0)
+                Text("No user recipes yet, create one!").disabled(userData.userRecipes.userrecipes.count > 0)
                 List {
-                    ForEach(userRecipes.userrecipes, id: \.self) { userRecipe in
+                    ForEach(userData.userRecipes.userrecipes, id: \.self) { userRecipe in
                         Text(userRecipe.title)
                             .onTapGesture {
                                 selectedRecipe = userRecipe
-                                userRecipes.addRecipe(userRecipe)
-                                userRecipes.currentRecipe = userRecipe
+                                userData.userRecipes.addRecipe(userRecipe)
+                                userData.userRecipes.currentRecipe = userRecipe
 #if DEBUG
                                 print("Selected Recipe: \(userRecipe.title)")
 #endif
                             }
                     }
                     .onDelete(perform: deleteUserRecipe)
-                    .disabled(userRecipes.userrecipes.count == 0)
+                    .disabled(userData.userRecipes.userrecipes.count == 0)
                 }
                 
                 Text("Selected Recipe is: " +  (selectedRecipe?.title ?? "None"))
@@ -71,8 +75,5 @@ struct SelectCurrentRecipeView: View {
 
 #Preview {
     SelectCurrentRecipeView()
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }

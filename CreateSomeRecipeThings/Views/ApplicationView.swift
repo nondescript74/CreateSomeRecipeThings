@@ -9,10 +9,8 @@ import SwiftUI
 
 struct ApplicationView: View {
     // MARK: - Environment Variables
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var userRecipes: UserRecipes
+    @EnvironmentObject var userData: UserData
+
     // MARK: - Properties
     fileprivate enum tabs: String {
         case create = "Create"
@@ -34,34 +32,30 @@ struct ApplicationView: View {
                 Image(uiImage: UIImage(systemName: "list.bullet")!)
                 Text(tabs.create.rawValue)
             }
-//            
-//            ChooseIngredView().tabItem {
-//                Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
-//                Text(tabs.ingredients.rawValue)
-//            }
-//            
-//            ChooseEquipmentView().tabItem {
-//                Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
-//                Text(tabs.equipment.rawValue)
-//            }
             
             DeleteStepsView().tabItem {
                 Image(uiImage: UIImage(systemName: "trash")!)
                 Text(tabs.delete.rawValue)
             }
         }
-        .environmentObject(stepList)
-        .environmentObject(selectedIngredientsList)
-        .environmentObject(selectedEquipmentList)
-        .environmentObject(userRecipes)
-        
+        .environmentObject(userData)
     }
 }
 
 #Preview {
     ApplicationView()
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }
+
+/*
+ //
+ //            ChooseIngredView().tabItem {
+ //                Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
+ //                Text(tabs.ingredients.rawValue)
+ //            }
+ //
+ //            ChooseEquipmentView().tabItem {
+ //                Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
+ //                Text(tabs.equipment.rawValue)
+ //            }
+ */

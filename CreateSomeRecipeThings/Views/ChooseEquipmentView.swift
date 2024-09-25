@@ -12,10 +12,7 @@ import UIKit
 struct ChooseEquipmentView: View {
     
     // MARK: - Environment Variables
-    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-    @EnvironmentObject var stepList: StepList
-    @EnvironmentObject var userRecipes: UserRecipes
+    @EnvironmentObject var userData: UserData
     
     @State private var searchText: String = ""
     @State private var filteredEquipment: [Ent] = []
@@ -52,11 +49,11 @@ struct ChooseEquipmentView: View {
     private func remove() {
         if selection.isEmpty { return }
 #if DEBUG
-        print(selectedEquipmentList.selectedEquipment)
+        print(userData.selectedEquipList.selectedEquipment)
 #endif
         for eachSel in selection {
-            if selectedEquipmentList.selectedEquipment.contains(eachSel) {
-                selectedEquipmentList.selectedEquipment.remove(at: selectedEquipmentList.selectedEquipment.firstIndex(of: eachSel)!)
+            if userData.selectedEquipList.selectedEquipment.contains(eachSel) {
+                userData.selectedEquipList.selectedEquipment.remove(at: userData.selectedEquipList.selectedEquipment.firstIndex(of: eachSel)!)
 #if DEBUG
                print("Removed: \(eachSel)")
 #endif
@@ -67,10 +64,10 @@ struct ChooseEquipmentView: View {
     private func add() {
         if selection.isEmpty { return }
         for eachSel in selection {
-            if !selectedEquipmentList.selectedEquipment.contains(eachSel) {
-                selectedEquipmentList.addEquipment(eachSel)
+            if !userData.selectedEquipList.selectedEquipment.contains(eachSel) {
+                userData.selectedEquipList.addEquipment(eachSel)
 #if DEBUG
-                print("Added: ", selectedEquipmentList.selectedEquipment.last!)
+                print("Added: ", userData.selectedEquipList.selectedEquipment.last!)
 #endif
             }
         }
@@ -106,22 +103,17 @@ struct ChooseEquipmentView: View {
                 }.disabled(selection.count == 0)
             }
             
-            List(selectedEquipmentList.selectedEquipment, id: \.self) { ent in
+            List(userData.selectedEquipList.selectedEquipment, id: \.self) { ent in
                 Text(ent.name)
             }
             
             .navigationTitle("Choose Equipment")
         }
-        .environmentObject(stepList)
-        .environmentObject(selectedEquipmentList)
-        .environmentObject(selectedIngredientsList)
+        .environmentObject(userData)
     }
 }
 
 #Preview {
     ChooseEquipmentView()
-        .environmentObject(SelectedEquipmentList())
-        .environmentObject(SelectedIngredientsList())
-        .environmentObject(StepList())
-        .environmentObject(UserRecipes())
+        .environmentObject(UserData())
 }
