@@ -30,7 +30,7 @@ class SelectedEquipmentList: ObservableObject {
         print(self.selectedEquipment)
 #endif
     }
-    
+    @MainActor
     func removeEquipment(_ equipment: Ent) {
         self.selectedEquipment.removeAll(where: { $0.id == equipment.id })
 #if DEBUG

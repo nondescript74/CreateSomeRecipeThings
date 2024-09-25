@@ -12,7 +12,8 @@ struct SelectCurrentRecipeView: View {
     // MARK: - Environment Variables
     @EnvironmentObject var userData: UserData
     // MARK: - State
-    @State var selectedRecipe: Arecipe?
+    @State private var selectedRecipe: Arecipe?
+    @State private var searchText: String = ""
     
     
     init() {
@@ -30,6 +31,7 @@ struct SelectCurrentRecipeView: View {
         guard let selectedRecipe else { return }
         userData.userRecipes.addRecipe(selectedRecipe)
         userData.userRecipes.currentRecipe = selectedRecipe
+        userData.userRecipes.saveRecipe()
 #if DEBUG
         print("Selected Recipe: \(selectedRecipe.title)")
 #endif
@@ -42,6 +44,7 @@ struct SelectCurrentRecipeView: View {
             
             VStack {
                 Text("No user recipes yet, create one!").disabled(userData.userRecipes.userrecipes.count > 0)
+                
                 List {
                     ForEach(userData.userRecipes.userrecipes, id: \.self) { userRecipe in
                         Text(userRecipe.title)
@@ -57,10 +60,21 @@ struct SelectCurrentRecipeView: View {
                     .onDelete(perform: deleteUserRecipe)
                     .disabled(userData.userRecipes.userrecipes.count == 0)
                 }
-                
-                Text("Selected Recipe is: " +  (selectedRecipe?.title ?? "None"))
-                    .disabled(selectedRecipe == nil)
+            }.background(Color.blue.opacity(0.1))
+            .padding()
+            
+            
+            VStack {
+                Text("Create a new recipe")
                     .padding()
+                TextField("Recipe Title", text: $searchText)
+                Button("Create Recipe") {
+                    selectedRecipe = Arecipe(extendedIngredients: [], title: searchText, summary: "Creating a new recipe", cuisines: [], dishTypes: [], diets: [], occasions: [], analyzedInstructions: [], recipeUUID: UUID())
+#if DEBUG
+                    print("Creating Recipe with title: \(searchText)")
+#endif
+                }
+                
                 Button("Save") {
                     
 #if DEBUG
@@ -68,7 +82,18 @@ struct SelectCurrentRecipeView: View {
 #endif
                     saveRecipe()
                 }
-            }
+            }.background(Color.gray.opacity(0.1))
+            .padding()
+            
+            VStack {
+                
+                Text("Selected Recipe is: " +  (selectedRecipe?.title ?? "None"))
+                    .disabled(selectedRecipe == nil)
+                    .padding()
+                
+                
+            }.background(Color.cyan.opacity(0.1))
+            .padding()
         }
     }
 }

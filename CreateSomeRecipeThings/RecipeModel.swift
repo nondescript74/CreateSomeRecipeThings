@@ -32,7 +32,7 @@ struct Arecipe: Codable, Identifiable, Hashable {
     var instructions: String?
     var analyzedInstructions: [AnalyzedInstruction?]
     var sourceName, creditsText, originalID: String?
-    var recipeUUID: UUID?
+    var recipeUUID: UUID
 }
 
 // MARK: - AnalyzedInstruction

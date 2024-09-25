@@ -29,10 +29,25 @@ class AnalyzedInstructionList: ObservableObject {
 #endif
     }
     
+    @MainActor
     func remove(_ instruction: AnalyzedInstruction) {
         self.instructions.removeAll(where: { $0.id == instruction.id })
 #if DEBUG
         print("Removed: ", self.instructions)
 #endif
+    }
+    
+    @MainActor
+    func saveAnalyInstructions() {
+        let arecipesAIUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent(recipeAnalyzedInstrFolderName)
+        do {
+            try JSONEncoder().encode(instructions).write(to: arecipesAIUrl)
+#if DEBUG
+            print("Saved A Instructions to: ", arecipesAIUrl, "\n")
+            print("Instructions count: ", self.instructions.count, "\n")
+#endif
+        } catch {
+            print("Error saving step: \(error)", "\n")
+        }
     }
 }

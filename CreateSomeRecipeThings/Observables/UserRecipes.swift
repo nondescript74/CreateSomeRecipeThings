@@ -76,7 +76,7 @@ final class UserRecipes: ObservableObject {
         print("Added recipe: ", arecipe.title)
 #endif
     }
-    
+    @MainActor
     func removeRecipe(_ arecipe: Arecipe) {
         self.userrecipes.removeAll(where: { $0.id == arecipe.id })
         self.currentRecipe = sampleRecipe
@@ -84,9 +84,9 @@ final class UserRecipes: ObservableObject {
         print("Removed recipe: ", arecipe.title)
 #endif
     }
-    
+    @MainActor
     func saveRecipe() {
-        let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes")
+        let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent("\(currentRecipe.title).json")
         do {
             try JSONEncoder().encode(currentRecipe).write(to: arecipesUrl)
 #if DEBUG

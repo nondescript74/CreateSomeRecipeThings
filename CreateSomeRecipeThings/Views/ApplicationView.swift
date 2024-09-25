@@ -20,12 +20,18 @@ struct ApplicationView: View {
         case ingredients = "Ingred"
         case equipment = "Equip"
         case delete = "Delete"
+        case ai = "AI"
     }
     var body: some View {
         TabView {
             SelectCurrentRecipeView().tabItem {
                 Image(uiImage: UIImage(systemName: "square.and.arrow.down")!)
                 Text(tabs.select.rawValue)
+            }
+            
+            CreateAddAnalyInstructionView().tabItem {
+                Image(uiImage: UIImage(systemName: "plus.circle.fill")!)
+                Text(tabs.ai.rawValue)
             }
             
             CreateStepView().tabItem {
