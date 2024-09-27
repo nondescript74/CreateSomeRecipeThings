@@ -28,23 +28,26 @@ struct ApplicationView: View {
                 Image(uiImage: UIImage(systemName: "square.and.arrow.down")!)
                 Text(tabs.select.rawValue)
             }
+            .environmentObject(userData)
             
             CreateAddAnalyInstructionView().tabItem {
                 Image(uiImage: UIImage(systemName: "plus.circle.fill")!)
                 Text(tabs.ai.rawValue)
             }
+            .environmentObject(userData)
             
             CreateStepView().tabItem {
                 Image(uiImage: UIImage(systemName: "list.bullet")!)
                 Text(tabs.create.rawValue)
             }
+            .environmentObject(userData)
             
             DeleteStepsView().tabItem {
                 Image(uiImage: UIImage(systemName: "trash")!)
                 Text(tabs.delete.rawValue)
             }
+            .environmentObject(userData)
         }
-        .environmentObject(userData)
     }
 }
 

@@ -14,22 +14,29 @@ struct CreateAddAnalyInstructionView: View {
     
     @State fileprivate var analyInstruction: AnalyzedInstruction = AnalyzedInstruction()
     
+    
     fileprivate func addInstruction() {
         guard !analyInstruction.name.isEmpty else { return }
         
 #if DEBUG
-            print("currentRecipe.recipeUUID: ", userData.userRecipes.currentRecipe.recipeUUID)
+        print("currentRecipe.recipeUUID: ", userData.userRecipes.currentRecipe.recipeUUID)
+        print("analyInstruction: ", analyInstruction)
 #endif
-            
-            analyInstruction = AnalyzedInstruction(name: analyInstruction.name, steps: userData.stepList.steps, id: userData.userRecipes.currentRecipe.recipeUUID)
-            
             userData.analyzedInstructions.add(analyInstruction)
+        
+        userData.userRecipes.currentRecipe.analyzedInstructions.append(analyInstruction)
+#if DEBUG
+        print("Added the Analyzed Instruction to the current recipe ", userData.userRecipes.currentRecipe)
+#endif
 
     }
     
     var body: some View {
         
         VStack {
+            Text("Analyzed Instructions").font(.headline)
+                .padding()
+            
             TextField("Instruction description", text: $analyInstruction.name)
                 .border(Color.black, width: 1)
                 .padding()
@@ -45,37 +52,40 @@ struct CreateAddAnalyInstructionView: View {
                     }
                 }
             }
+            List {
+                Text("Instructions")
+                ForEach(userData.analyzedInstructions.instructions, id: \.self) { instruction in
+                    VStack {
+                        Text(instruction.name)
+                    }
+                }.disabled(userData.analyzedInstructions.instructions.isEmpty)
+            }
             
             Button("Add all steps to instruction") {
                 analyInstruction.steps.append(contentsOf: userData.stepList.steps)
 #if DEBUG
                 print("Added all steps to: ", analyInstruction.name)
 #endif
-                userData.stepList.steps.removeAll()
-#if DEBUG
-                print("Removed all created steps")
-#endif
+                
                 userData.userRecipes.currentRecipe.analyzedInstructions.append(analyInstruction)
 #if DEBUG
-                print("Added analyzed instruction to user recipe")
+                print("Added analyzed instruction to current recipe", userData.userRecipes.currentRecipe.title)
 #endif
-            }
-            .padding()
-            .disabled(analyInstruction.name == "Please provide an instruction name")
-            
-            
-            Button("Add Instruction") {
+                userData.analyzedInstructions.add(analyInstruction)
+                userData.analyzedInstructions.upDateAInstr()
+                userData.stepList.upDateSteps()
 #if DEBUG
-                print("selectedIngredientsList.selectedIngredients.count ", userData.selectedIngredList.selectedIngredients.count.description)
-                print("selectedEquipmentList.selectedEquipment.count ", userData.selectedEquipList.selectedEquipment.count.description)
-                print("stepList.steps.count ", userData.stepList.steps.count.description)
+                print("AddAllSteps, Updated step list via upDateSteps")
 #endif
-                addInstruction()
+
             }
             .padding()
             .disabled(analyInstruction.name == "Please provide an instruction name")
+
             
-        }
+        }.onAppear(perform:     {
+            userData.analyzedInstructions.upDateAInstr()
+        })
     }
 }
 

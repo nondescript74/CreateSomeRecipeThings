@@ -47,6 +47,24 @@ func getReczipesFolderUrl() -> URL {
     }
 }
 
+func getRecipesAIDirUrl() -> URL {
+    let url = getReczipesFolderUrl()
+    let aiUrl = url.appendingPathComponent(recipeAnalyzedInstrFolderName)
+    
+    if !FileManager.default.fileExists(atPath: aiUrl.path) {
+        do {
+            try FileManager.default.createDirectory(at: aiUrl, withIntermediateDirectories: true, attributes: nil)
+#if DEBUG
+            print("created Analyzed Instructions directory")
+#endif
+            return aiUrl
+        } catch {
+            fatalError("could not create Analyzed Instructions directory")
+        }
+    }
+    return aiUrl
+}
+
 func getRecipesStepsDirUrl() -> URL {
     let url = getReczipesFolderUrl()
     let stepsUrl = url.appendingPathComponent(recipeStepsFolderName)

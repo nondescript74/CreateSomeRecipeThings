@@ -46,9 +46,9 @@ final class UserRecipes: ObservableObject {
                 let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes")
                 for aurl in arecipesDir {
                     let url = arecipesUrl.appendingPathComponent(aurl)
-#if DEBUG
-                    print("Arecipe url: ", url)
-#endif
+//#if DEBUG
+//                    print("Arecipe url: ", url)
+//#endif
                     let arecipe = try JSONDecoder().decode(Arecipe.self, from: try! Data(contentsOf: url))
                     self.userrecipes.append(arecipe)
                     self.currentRecipe = arecipe
@@ -87,6 +87,7 @@ final class UserRecipes: ObservableObject {
     @MainActor
     func saveRecipe() {
         let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent("\(currentRecipe.title).json")
+        
         do {
             try JSONEncoder().encode(currentRecipe).write(to: arecipesUrl)
 #if DEBUG
@@ -96,5 +97,62 @@ final class UserRecipes: ObservableObject {
         } catch {
             print("Error saving step: \(error)")
         }
+        
+        // reload
+        reloadRecipes()
+    }
+    
+    @MainActor
+    func reloadRecipes() {
+      
+        do  {
+            let reczipesDir = try FileManager.default.contentsOfDirectory(atPath: getReczipesFolderUrl().path)
+#if DEBUG
+            print("Reloading Recipes folder contents:", reczipesDir)
+#endif
+            do {
+                _ = try FileManager.default.contentsOfDirectory(atPath: getReczipesFolderUrl().appendingPathComponent("Arecipes").path)
+            } catch {
+                // no Arecipes directory, create
+                do {
+                    let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes")
+                    try FileManager.default.createDirectory(at: arecipesUrl, withIntermediateDirectories: true)
+                    
+                } catch {
+                    fatalError("Could not create Arecipes directory")
+                }
+            }
+            let arecipesDir = try FileManager.default.contentsOfDirectory(atPath: getReczipesFolderUrl().appendingPathComponent("Arecipes").path)
+#if DEBUG
+                print("Reloaded Arecipes folder contents count: ", arecipesDir.count)
+#endif
+//            if arecipesDir.isEmpty {
+//                currentRecipe = sampleRecipe
+//                userrecipes.append(sampleRecipe)
+//                
+//                #if DEBUG
+//                print("Reloaded Created a sample Arecipe, added it to user recipes")
+//                print("User recipes now has count: ", userrecipes.count.description)
+//                #endif
+//            } else {
+//                let arecipesDir = try FileManager.default.contentsOfDirectory(atPath: getReczipesFolderUrl().appendingPathComponent("Arecipes").path)
+                let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes")
+                for aurl in arecipesDir {
+                    let url = arecipesUrl.appendingPathComponent(aurl)
+//#if DEBUG
+//                    print("Arecipe url: ", url)
+//#endif
+                    let arecipe = try JSONDecoder().decode(Arecipe.self, from: try! Data(contentsOf: url))
+                    self.userrecipes.append(arecipe)
+//                    self.currentRecipe = arecipe
+#if DEBUG
+                    print("Reloaded userrecipes")
+#endif
+                }
+//            }
+        } catch {
+            fatalError("Could not read recipes folder: \(error)")
+        }
+    
     }
 }

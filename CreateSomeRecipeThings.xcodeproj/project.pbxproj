@@ -403,7 +403,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CreateSomeRecipeThings/CreateSomeRecipeThings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.0.3.17;
+				CURRENT_PROJECT_VERSION = 2.0.3.18;
 				DEVELOPMENT_ASSET_PATHS = "\"CreateSomeRecipeThings/Preview Content\"";
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -447,7 +447,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CreateSomeRecipeThings/CreateSomeRecipeThings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.0.3.17;
+				CURRENT_PROJECT_VERSION = 2.0.3.18;
 				DEVELOPMENT_ASSET_PATHS = "\"CreateSomeRecipeThings/Preview Content\"";
 				DEVELOPMENT_TEAM = YKHW2TJ32G;
 				ENABLE_HARDENED_RUNTIME = YES;

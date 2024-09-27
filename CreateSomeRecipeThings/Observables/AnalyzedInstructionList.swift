@@ -9,13 +9,39 @@ import Foundation
 
 class AnalyzedInstructionList: ObservableObject {
     
-    @Published var instructions: [AnalyzedInstruction]
+    @Published var instructions: [AnalyzedInstruction] = []
     
     init() {
-        self.instructions = []
+        do  {
+            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesAIDirUrl().path)
 #if DEBUG
-        print("Initialized: ", self.instructions)
+            print("AI Contents", contents)
 #endif
+            if contents.isEmpty {
+#if DEBUG
+                print("AI Contents Empty")
+#endif
+                
+            } else {
+                let fileUrl = getRecipesAIDirUrl()
+#if DEBUG
+                print("AI url: ", fileUrl)
+#endif
+                for aurl in contents {
+                    let url = fileUrl.appendingPathComponent(aurl)
+//#if DEBUG
+//                    print("Step url: ", url)
+//#endif
+                    let anAI = try JSONDecoder().decode(AnalyzedInstruction.self, from: try! Data(contentsOf: url))
+                    instructions.append(anAI)
+                }
+            }
+        } catch {
+#if DEBUG
+            print("not able to read instuctions: ", error, "\n")
+#endif
+            self.instructions = []
+        }
     }
     
     @MainActor
@@ -27,6 +53,19 @@ class AnalyzedInstructionList: ObservableObject {
 #if DEBUG
         print("Added: ", self.instructions)
 #endif
+        
+        let arecipesAIUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent(recipeAnalyzedInstrFolderName)
+        do {
+            try JSONEncoder().encode(instructions).write(to: arecipesAIUrl)
+#if DEBUG
+            print("Instructions count: ", self.instructions.count, "\n")
+            print("Saved A Instructions to: ", arecipesAIUrl, "\n")
+            print("Instructions count: ", self.instructions.count, "\n")
+#endif
+        } catch {
+            print("Error saving step: \(error)", "\n")
+        }
+        
     }
     
     @MainActor
@@ -38,16 +77,38 @@ class AnalyzedInstructionList: ObservableObject {
     }
     
     @MainActor
-    func saveAnalyInstructions() {
-        let arecipesAIUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent(recipeAnalyzedInstrFolderName)
-        do {
-            try JSONEncoder().encode(instructions).write(to: arecipesAIUrl)
+    func upDateAInstr() {
+        do  {
+            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesAIDirUrl().path)
 #if DEBUG
-            print("Saved A Instructions to: ", arecipesAIUrl, "\n")
-            print("Instructions count: ", self.instructions.count, "\n")
+            print("Update Analyzed Instructions, Contents", contents)
 #endif
+            if contents.isEmpty {
+#if DEBUG
+                print("Update Analyzed Instructions, Contents Empty")
+#endif
+                self.instructions = []
+            } else {
+                let fileUrl = getRecipesAIDirUrl()
+#if DEBUG
+                print("Update Analyzed Instructions from file:", fileUrl)
+#endif
+                for aurl in contents {
+                    let url = fileUrl.appendingPathComponent(aurl)
+                    //#if DEBUG
+                    //                    print("Update Steps, Step url: ", url)
+                    //#endif
+                    let anAI = try JSONDecoder().decode(AnalyzedInstruction.self, from: try! Data(contentsOf: url))
+                    if !self.instructions.contains(anAI) {
+                        self.instructions.append(anAI)
+                    }
+                }
+            }
         } catch {
-            print("Error saving step: \(error)", "\n")
+#if DEBUG
+            print("not able to read Analyzed Instructions")
+#endif
+            self.instructions = []
         }
     }
 }

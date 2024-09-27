@@ -36,9 +36,9 @@ class StepList: ObservableObject {
 #endif
                 for aurl in contents {
                     let url = fileUrl.appendingPathComponent(aurl)
-#if DEBUG
-                    print("Step url: ", url)
-#endif
+//#if DEBUG
+//                    print("Step url: ", url)
+//#endif
                     let astep = try JSONDecoder().decode(Step.self, from: try! Data(contentsOf: url))
                     steps.append(astep)
                 }
@@ -72,6 +72,7 @@ class StepList: ObservableObject {
         } catch {
             print("Error saving step: \(error)")
         }
+        upDateSteps()
     }
     
     func deleteStep(step: Step) {
@@ -96,11 +97,13 @@ class StepList: ObservableObject {
 #endif
                 for aurl in contents {
                     let url = fileUrl.appendingPathComponent(aurl)
-#if DEBUG
-                    print("Update Steps, Step url: ", url)
-#endif
+//#if DEBUG
+//                    print("Update Steps, Step url: ", url)
+//#endif
                     let astep = try JSONDecoder().decode(Step.self, from: try! Data(contentsOf: url))
-                    steps.append(astep)
+                    if !steps.contains(astep) {
+                        steps.append(astep)
+                    }
                 }
             }
         } catch {
