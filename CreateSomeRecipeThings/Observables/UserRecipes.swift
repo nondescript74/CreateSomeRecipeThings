@@ -102,7 +102,7 @@ final class UserRecipes: ObservableObject {
             print("Saved Arecipe to: ", arecipesUrl)
 #endif
         } catch {
-            print("Error saving step: \(error)")
+            print("Error saving Arecipe: \(error)")
         }
     }
 //    

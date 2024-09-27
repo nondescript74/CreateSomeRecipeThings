@@ -12,7 +12,7 @@ struct SelectCurrentRecipeView: View {
     // MARK: - Environment Variables
     @EnvironmentObject var userData: UserData
     // MARK: - State
-    @State private var selectedRecipe: Arecipe = sampleRecipe
+//    @State private var selectedRecipe: Arecipe
     @State private var searchText: String = ""
     
     
@@ -33,16 +33,16 @@ struct SelectCurrentRecipeView: View {
                 .font(.title)
             
             VStack {
-                Text("These are the recipes you've created.").font(.headline)
+                Text("These are the recipes you've created.").font(.headline).padding()
                 List {
                     ForEach(userData.userRecipes.userrecipes, id: \.self) { userRecipe in
                         Text(userRecipe.title)
                             .onTapGesture {
                                 userData.userRecipes.currentRecipe = userRecipe
-                                selectedRecipe = userRecipe
-#if DEBUG
-                                print("Selected Recipe: \(userData.userRecipes.currentRecipe.title)")
-#endif
+//                                selectedRecipe = userRecipe
+//#if DEBUG
+//                                print("Selected Recipe, current recipe: \(userData.userRecipes.currentRecipe.title)")
+//#endif
                             }
                     }
                     .onDelete(perform: deleteUserRecipe)
@@ -54,7 +54,7 @@ struct SelectCurrentRecipeView: View {
             
             VStack {
                 Text("Update Recipe and save").font(.headline)
-                Text("Selected recipe: " + selectedRecipe.title)
+//                Text("Selected recipe: " + selectedRecipe.title)
                 Button ("Update + Save") {
                     userData.userRecipes.currentRecipe.analyzedInstructions = userData.analyzedInstructions.instructions
                     userData.userRecipes.saveRecipe()

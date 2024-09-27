@@ -35,9 +35,9 @@ struct CreateStepView: View {
         
         let myStep = Step(number: userData.stepList.getNextStepIDToUse(), step: steptext, ingredients: userData.selectedIngredList.selectedIngredients, equipment: userData.selectedEquipList.selectedEquipment, recipeUUID: myUUID)
         userData.stepList.saveStep(step: myStep)
-        userData.stepList = .init()
-        userData.selectedEquipList.selectedEquipment.removeAll()
-        userData.selectedIngredList.selectedIngredients.removeAll()
+//        userData.stepList = .init()
+//        userData.selectedEquipList.selectedEquipment.removeAll()
+//        userData.selectedIngredList.selectedIngredients.removeAll()
         steptext = ""
 #if DEBUG
         print("Steps: ",userData.stepList.steps)
@@ -59,21 +59,6 @@ struct CreateStepView: View {
     
     var body: some View {
         VStack  {
-            VStack  {
-                Text("Steps").font(.headline)
-                List {
-                    if userData.stepList.steps.isEmpty {
-                        Text("No Steps Found")
-                    } else {
-                        ForEach(userData.stepList.steps.sorted(), id: \.self) { step in
-                            VStack {
-                                Text("Step " + step.number.description + ". " + step.step )
-                            }
-                            
-                        }.onDelete(perform: deleteStep)
-                    }
-                }
-            }
             
             VStack  {
                 Text("Create a new Step").font(.headline)

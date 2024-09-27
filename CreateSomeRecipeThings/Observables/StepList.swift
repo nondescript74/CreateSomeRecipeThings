@@ -47,7 +47,7 @@ class StepList: ObservableObject {
             print("not able to read steps")
 #endif
         }
-        self.steps = []
+        
     }
 
     func getNextStepIDToUse() -> Int {

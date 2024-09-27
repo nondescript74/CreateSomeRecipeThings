@@ -24,14 +24,11 @@ class AnalyzedInstructionList: ObservableObject {
                 
             } else {
                 let fileUrl = getRecipesAIDirUrl()
-#if DEBUG
-                print("AI url: ", fileUrl)
-#endif
                 for aurl in contents {
                     let url = fileUrl.appendingPathComponent(aurl)
-//#if DEBUG
-//                    print("Step url: ", url)
-//#endif
+#if DEBUG
+                    print("AInstruction url: ", url)
+#endif
                     let anAI = try JSONDecoder().decode(AnalyzedInstruction.self, from: try! Data(contentsOf: url))
                     instructions.append(anAI)
                 }
@@ -50,19 +47,17 @@ class AnalyzedInstructionList: ObservableObject {
         }
         self.instructions.append(instruction)
 #if DEBUG
-        print("Added: ", self.instructions)
+        print("AInstr Added: ", self.instructions, "Count is now: ", self.instructions.count, "\n")
 #endif
         
-        let arecipesAIUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent(recipeAnalyzedInstrFolderName)
+        let arecipesAIUrl = getRecipesAIDirUrl().appendingPathComponent(instruction.name + ".json")
         do {
-            try JSONEncoder().encode(instructions).write(to: arecipesAIUrl)
+            try JSONEncoder().encode(instruction).write(to: arecipesAIUrl)
 #if DEBUG
-            print("Instructions count: ", self.instructions.count, "\n")
-            print("Saved A Instructions to: ", arecipesAIUrl, "\n")
-            print("Instructions count: ", self.instructions.count, "\n")
+            print("Saved Analyzed Instruction to: ", arecipesAIUrl, "\n")
 #endif
         } catch {
-            print("Error saving step: \(error)", "\n")
+            print("Error saving AInstr: \(error)")
         }
         
     }
@@ -74,38 +69,38 @@ class AnalyzedInstructionList: ObservableObject {
 #endif
     }
     
-    func upDateAInstr() {
-        do  {
-            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesAIDirUrl().path)
-#if DEBUG
-            print("Update Analyzed Instructions, Contents", contents)
-#endif
-            if contents.isEmpty {
-#if DEBUG
-                print("Update Analyzed Instructions, Contents Empty")
-#endif
-                self.instructions = []
-            } else {
-                let fileUrl = getRecipesAIDirUrl()
-#if DEBUG
-                print("Update Analyzed Instructions from file:", fileUrl)
-#endif
-                for aurl in contents {
-                    let url = fileUrl.appendingPathComponent(aurl)
-                    //#if DEBUG
-                    //                    print("Update Steps, Step url: ", url)
-                    //#endif
-                    let anAI = try JSONDecoder().decode(AnalyzedInstruction.self, from: try! Data(contentsOf: url))
-                    if !self.instructions.contains(anAI) {
-                        self.instructions.append(anAI)
-                    }
-                }
-            }
-        } catch {
-#if DEBUG
-            print("not able to read Analyzed Instructions")
-#endif
-            self.instructions = []
-        }
-    }
+//    func upDateAInstr() {
+//        do  {
+//            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesAIDirUrl().path)
+//#if DEBUG
+//            print("Update Analyzed Instructions, Contents", contents)
+//#endif
+//            if contents.isEmpty {
+//#if DEBUG
+//                print("Update Analyzed Instructions, Contents Empty")
+//#endif
+//                self.instructions = []
+//            } else {
+//                let fileUrl = getRecipesAIDirUrl()
+//#if DEBUG
+//                print("Update Analyzed Instructions from file:", fileUrl)
+//#endif
+//                for aurl in contents {
+//                    let url = fileUrl.appendingPathComponent(aurl)
+//                    //#if DEBUG
+//                    //                    print("Update Steps, Step url: ", url)
+//                    //#endif
+//                    let anAI = try JSONDecoder().decode(AnalyzedInstruction.self, from: try! Data(contentsOf: url))
+//                    if !self.instructions.contains(anAI) {
+//                        self.instructions.append(anAI)
+//                    }
+//                }
+//            }
+//        } catch {
+//#if DEBUG
+//            print("not able to read Analyzed Instructions")
+//#endif
+//            self.instructions = []
+//        }
+//    }
 }
