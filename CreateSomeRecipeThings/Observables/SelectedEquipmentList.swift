@@ -16,12 +16,10 @@ class SelectedEquipmentList: ObservableObject {
     init() {
         self.selectedEquipment = []
 #if DEBUG
-        print("Initialized: ", self.selectedEquipment)
+        print("SelectedEquipmentList Initialized: ", self.selectedEquipment)
 #endif
     }
     
-    
-    @MainActor
     func addEquipment(_ equipment: Ent) {
         if self.selectedEquipment.contains(where: { $0.id == equipment.id }) { return }
         self.selectedEquipment.append(equipment)
@@ -30,7 +28,7 @@ class SelectedEquipmentList: ObservableObject {
         print(self.selectedEquipment)
 #endif
     }
-    @MainActor
+    
     func removeEquipment(_ equipment: Ent) {
         self.selectedEquipment.removeAll(where: { $0.id == equipment.id })
 #if DEBUG

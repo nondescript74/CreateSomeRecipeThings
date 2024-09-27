@@ -52,14 +52,14 @@ struct CreateAddAnalyInstructionView: View {
                     }
                 }
             }
-            List {
-                Text("Instructions")
-                ForEach(userData.analyzedInstructions.instructions, id: \.self) { instruction in
-                    VStack {
-                        Text(instruction.name)
-                    }
-                }.disabled(userData.analyzedInstructions.instructions.isEmpty)
-            }
+//            List {
+//                Text("Instructions")
+//                ForEach(userData.analyzedInstructions.instructions, id: \.self) { instruction in
+//                    VStack {
+//                        Text(instruction.name)
+//                    }
+//                }.disabled(userData.analyzedInstructions.instructions.isEmpty)
+//            }
             
             Button("Add all steps to instruction") {
                 analyInstruction.steps.append(contentsOf: userData.stepList.steps)
@@ -73,7 +73,7 @@ struct CreateAddAnalyInstructionView: View {
 #endif
                 userData.analyzedInstructions.add(analyInstruction)
                 userData.analyzedInstructions.upDateAInstr()
-                userData.stepList.upDateSteps()
+//                userData.stepList.upDateSteps()
 #if DEBUG
                 print("AddAllSteps, Updated step list via upDateSteps")
 #endif

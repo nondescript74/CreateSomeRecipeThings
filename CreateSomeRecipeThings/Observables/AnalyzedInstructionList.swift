@@ -44,7 +44,6 @@ class AnalyzedInstructionList: ObservableObject {
         }
     }
     
-    @MainActor
     func add(_ instruction: AnalyzedInstruction) {
         if self.instructions.contains(where: { $0.id == instruction.id }) {
             remove(instruction)
@@ -68,7 +67,6 @@ class AnalyzedInstructionList: ObservableObject {
         
     }
     
-    @MainActor
     func remove(_ instruction: AnalyzedInstruction) {
         self.instructions.removeAll(where: { $0.id == instruction.id })
 #if DEBUG
@@ -76,7 +74,6 @@ class AnalyzedInstructionList: ObservableObject {
 #endif
     }
     
-    @MainActor
     func upDateAInstr() {
         do  {
             let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesAIDirUrl().path)

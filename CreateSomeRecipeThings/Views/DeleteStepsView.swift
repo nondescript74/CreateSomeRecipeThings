@@ -18,8 +18,7 @@ struct DeleteStepsView: View {
             let aStep = userData.stepList.steps[anIndex]
             userData.stepList.deleteStep(step: aStep)
         }
-        userData.stepList.steps.removeAll()
-        userData.stepList.upDateSteps()
+        userData.stepList = .init()
     }
     
     var body: some View {

@@ -7,8 +7,8 @@
 
 import Foundation
 
-private var decoder: JSONDecoder = JSONDecoder()
-private var encoder: JSONEncoder = JSONEncoder()
+private let decoder: JSONDecoder = JSONDecoder()
+private let encoder: JSONEncoder = JSONEncoder()
 
 extension Bundle {
     func decode<T: Decodable>(_ type: T.Type, from file: String) -> T {

@@ -12,7 +12,7 @@ struct SelectCurrentRecipeView: View {
     // MARK: - Environment Variables
     @EnvironmentObject var userData: UserData
     // MARK: - State
-    @State private var selectedRecipe: Arecipe?
+    @State private var selectedRecipe: Arecipe = sampleRecipe
     @State private var searchText: String = ""
     
     
@@ -27,54 +27,58 @@ struct SelectCurrentRecipeView: View {
         userData.userRecipes.userrecipes.remove(atOffsets: offsets)
     }
     
-    private func saveRecipe(arecipe: Arecipe) {
-        userData.userRecipes.addRecipe(arecipe)
-        userData.userRecipes.currentRecipe = arecipe
-        userData.userRecipes.saveRecipe()
-        userData.userRecipes = .init()
-    }
-    
     var body: some View {
         VStack {
-            Text("Select the current recipe")
+            Text("Recipe management")
                 .font(.title)
             
             VStack {
+                Text("These are the recipes you've created.").font(.headline)
                 List {
                     ForEach(userData.userRecipes.userrecipes, id: \.self) { userRecipe in
                         Text(userRecipe.title)
                             .onTapGesture {
-//                                selectedRecipe = userRecipe
                                 userData.userRecipes.currentRecipe = userRecipe
                                 selectedRecipe = userRecipe
 #if DEBUG
                                 print("Selected Recipe: \(userData.userRecipes.currentRecipe.title)")
 #endif
                             }
-                            .padding()
                     }
                     .onDelete(perform: deleteUserRecipe)
                     .disabled(userData.userRecipes.userrecipes.count == 0)
                 }
                 
-                Text(selectedRecipe?.title ?? "No Recipe Selected")
-                
             }.background(Color.blue.opacity(0.1))
             .padding()
             
+            VStack {
+                Text("Update Recipe and save").font(.headline)
+                Text("Selected recipe: " + selectedRecipe.title)
+                Button ("Update + Save") {
+                    userData.userRecipes.currentRecipe.analyzedInstructions = userData.analyzedInstructions.instructions
+                    userData.userRecipes.saveRecipe()
+                    userData.userRecipes = .init()
+                }
+                
+            }
+            
             
             VStack {
-                Text("Create a new recipe")
+                Text("Create a new recipe").font(.headline)
                     .padding()
                 TextField("Recipe Title", text: $searchText)
-                Button("Create Recipe") {
+                Button("Create + Save") {
                      let selectedRecipe = Arecipe(extendedIngredients: [], title: searchText, summary: "Creating a new recipe", cuisines: [], dishTypes: [], diets: [], occasions: [], analyzedInstructions: [], recipeUUID: UUID())
+                    userData.userRecipes.currentRecipe = selectedRecipe
 #if DEBUG
                     print("Creating Recipe with title: \(searchText)")
                     print("Saving Recipe: \(selectedRecipe.title)")
 #endif
-                    saveRecipe(arecipe: selectedRecipe)
-                }.border(.bar, width: 2)
+                    userData.userRecipes.saveRecipe()
+                    userData.userRecipes = .init()
+                    
+                }.disabled(searchText.isEmpty)
             }.background(Color.gray.opacity(0.1))
             .padding()
 

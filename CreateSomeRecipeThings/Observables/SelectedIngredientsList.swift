@@ -15,12 +15,10 @@ class SelectedIngredientsList: ObservableObject {
     init() {
         self.selectedIngredients = []
 #if DEBUG
-        print("Initialized:", self.selectedIngredients)
+        print("Selected Ingredients Initialized:", self.selectedIngredients)
 #endif
     }
     
-    
-    @MainActor
     func addIngredient(_ ingredient: Ingredient) {
         if self.selectedIngredients.contains(where: { $0.id == ingredient.id }) { return }
         self.selectedIngredients.append(ingredient)

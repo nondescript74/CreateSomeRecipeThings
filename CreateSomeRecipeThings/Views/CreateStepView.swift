@@ -28,21 +28,22 @@ struct CreateStepView: View {
     
     fileprivate func addStep() {
         guard !steptext.isEmpty else { return }
-            let myUUID =  userData.userRecipes.currentRecipe.recipeUUID
+        let myUUID =  userData.userRecipes.currentRecipe.recipeUUID
 #if DEBUG
-            print("currentRecipe.recipeUUID: ", userData.userRecipes.currentRecipe.recipeUUID)
+        print("currentRecipe.recipeUUID: ", userData.userRecipes.currentRecipe.recipeUUID)
 #endif
-            
-            let myStep = Step(number: userData.stepList.getNextStepIDToUse(), step: steptext, ingredients: userData.selectedIngredList.selectedIngredients, equipment: userData.selectedEquipList.selectedEquipment, recipeUUID: myUUID)
-            userData.stepList.saveStep(step: myStep)
-            userData.selectedEquipList.selectedEquipment.removeAll()
-            userData.selectedIngredList.selectedIngredients.removeAll()
-            steptext = ""
+        
+        let myStep = Step(number: userData.stepList.getNextStepIDToUse(), step: steptext, ingredients: userData.selectedIngredList.selectedIngredients, equipment: userData.selectedEquipList.selectedEquipment, recipeUUID: myUUID)
+        userData.stepList.saveStep(step: myStep)
+        userData.stepList = .init()
+        userData.selectedEquipList.selectedEquipment.removeAll()
+        userData.selectedIngredList.selectedIngredients.removeAll()
+        steptext = ""
 #if DEBUG
-            print("Steps: ",userData.stepList.steps)
-            print("StepList: "," saved a step")
+        print("Steps: ",userData.stepList.steps)
+        print("StepList: "," saved a step")
 #endif
-            
+        
     }
     
     
@@ -52,8 +53,7 @@ struct CreateStepView: View {
             let aStep = userData.stepList.steps[anIndex]
             userData.stepList.deleteStep(step: aStep)
         }
-        userData.stepList.steps.removeAll()
-        userData.stepList.upDateSteps()
+        userData.stepList = .init()
     }
     
     
@@ -81,7 +81,7 @@ struct CreateStepView: View {
                 
                 Button(action: {
                     addStep()
-
+                    
                 }) {
                     Text("Add the step")
                 }.disabled(steptext == "")
