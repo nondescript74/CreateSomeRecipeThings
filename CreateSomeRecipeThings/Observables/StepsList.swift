@@ -65,6 +65,7 @@ class StepsList: ObservableObject {
     }
     
     func deleteStep(step: Step) {
+        self.steps.removeAll(where: { $0 == step })
         deleteStepInStorage(step: step)
     }
     

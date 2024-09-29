@@ -26,6 +26,11 @@ struct AddStepView: View {
             let newStep = Step(number: stepsList.getNextStepIDToUse(), step: stepName, ingredients: [], equipment: [], recipeUUID: UUID())
             stepsList.saveStep(step: newStep)
         }
+        
+        Button("Remove") {
+            let stepToRemove = stepsList.steps.first { $0.step == stepName }
+            stepsList.deleteStep(step: stepToRemove!)
+        }
     }
 }
 

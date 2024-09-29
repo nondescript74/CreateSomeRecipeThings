@@ -13,6 +13,7 @@ struct CreateSomeRecipeThingsApp: App {
         WindowGroup {
             ApplicationView()
                 .environmentObject(StepsList())
+                .environmentObject(AnalyzedInstructionList())
         }
     }
 }
