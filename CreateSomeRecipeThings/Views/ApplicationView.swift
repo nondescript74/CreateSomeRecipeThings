@@ -9,62 +9,26 @@ import SwiftUI
 
 struct ApplicationView: View {
     // MARK: - Environment Variables
-    @EnvironmentObject var userData: UserData
+    @EnvironmentObject var stepsList: StepsList
 
     // MARK: - Properties
     fileprivate enum tabs: String {
-        case create = "Create"
-        case length = "Length"
-        case display = "Show"
-        case select = "Recipe"
-        case ingredients = "Ingred"
-        case equipment = "Equip"
-        case delete = "Delete"
+        case steps = "Steps"
         case ai = "AI"
+        case picture = "Pic"
     }
     var body: some View {
         TabView {
-            SelectCurrentRecipeView().tabItem {
+            StepsManagementView().tabItem {
                 Image(uiImage: UIImage(systemName: "square.and.arrow.down")!)
-                Text(tabs.select.rawValue)
+                Text(tabs.steps.rawValue)
             }
-            .environmentObject(userData)
-            
-            CreateAddAnalyInstructionView().tabItem {
-                Image(uiImage: UIImage(systemName: "plus.circle.fill")!)
-                Text(tabs.ai.rawValue)
-            }
-            .environmentObject(userData)
-            
-            CreateStepView().tabItem {
-                Image(uiImage: UIImage(systemName: "list.bullet")!)
-                Text(tabs.create.rawValue)
-            }
-            .environmentObject(userData)
-            
-            DeleteStepsView().tabItem {
-                Image(uiImage: UIImage(systemName: "trash")!)
-                Text(tabs.delete.rawValue)
-            }
-            .environmentObject(userData)
+            .environmentObject(stepsList)
         }
     }
 }
 
 #Preview {
     ApplicationView()
-        .environmentObject(UserData())
+        .environmentObject(StepsList())
 }
-
-/*
- //
- //            ChooseIngredView().tabItem {
- //                Image(uiImage: UIImage(systemName: "checklist.unchecked")!)
- //                Text(tabs.ingredients.rawValue)
- //            }
- //
- //            ChooseEquipmentView().tabItem {
- //                Image(uiImage: UIImage(systemName: "list.bullet.clipboard")!)
- //                Text(tabs.equipment.rawValue)
- //            }
- */

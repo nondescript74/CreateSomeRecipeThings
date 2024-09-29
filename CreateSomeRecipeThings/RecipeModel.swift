@@ -39,6 +39,8 @@ let cuisines: [String] = [
     "Thai",
     "Vietnamese"
 ]
+let equip_list_shipped = Bundle.main.url(forResource: "equipment_list", withExtension: "json")
+let ingred_list_shipped = Bundle.main.url(forResource:"ingredients_list", withExtension: "json")
 
 let reczipesFolderName = "Reczipes"
 let recipeNotesFolderName = "RecipeNotes"

@@ -12,7 +12,7 @@ struct CreateSomeRecipeThingsApp: App {
     var body: some Scene {
         WindowGroup {
             ApplicationView()
-                .environmentObject(UserData())
+                .environmentObject(StepsList())
         }
     }
 }

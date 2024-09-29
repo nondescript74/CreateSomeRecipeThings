@@ -1,58 +1,47 @@
 //
-//  StepList.swift
+//  StepsList.swift
 //  CreateSomeRecipeThings
 //
-//  Created by Zahirudeen Premji on 9/11/24.
+//  Created by Zahirudeen Premji on 9/29/24.
 //
 
 import Foundation
-import SwiftUI
 
-class StepList: ObservableObject {
-        
-//    @EnvironmentObject var selectedIngredientsList: SelectedIngredientsList
-//    @EnvironmentObject var selectedEquipmentList: SelectedEquipmentList
-//    @EnvironmentObject var userRecipes: UserRecipes
+class StepsList: ObservableObject {
     
     // MARK: - Publisher
-    @Published var steps: [Step] = []
-    
+    @Published var steps: [Step] = [Step]()
+        
     init() {
         do  {
             let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesStepsDirUrl().path)
             if contents.isEmpty {
 #if DEBUG
-                print("StepList Contents Empty")
+                print("Repop: StepList Contents Empty")
 #endif
             } else {
                 let fileUrl = getRecipesStepsDirUrl()
 #if DEBUG
-                print("Steps url: ", fileUrl)
+                print("Repop: Steps url: ", fileUrl)
 #endif
                 
 #if DEBUG
-                print("StepList Contents count: ", contents.count)
+                print("Repop: StepList Contents count: ", contents.count)
 #endif
                 for aurl in contents {
                     let url = fileUrl.appendingPathComponent(aurl)
-//#if DEBUG
-//                    print("Step url: ", url)
-//#endif
+#if DEBUG
+                    print("Step url: ", url)
+#endif
                     let astep = try JSONDecoder().decode(Step.self, from: try! Data(contentsOf: url))
                     steps.append(astep)
                 }
             }
         } catch {
 #if DEBUG
-            print("not able to read steps")
+            print("Repop: not able to read steps")
 #endif
         }
-        
-    }
-
-    func getNextStepIDToUse() -> Int {
-        let nextnum = steps.max(by: { $0.number < $1.number })?.number ?? 0 + 1
-        return nextnum + 1
     }
     
     func saveStep(step: Step) {
@@ -70,44 +59,15 @@ class StepList: ObservableObject {
         }
     }
     
+    func getNextStepIDToUse() -> Int {
+        let nextnum = steps.max(by: { $0.number < $1.number })?.number ?? 0 + 1
+        return nextnum + 1
+    }
+    
     func deleteStep(step: Step) {
         deleteStepInStorage(step: step)
     }
     
-//    func upDateSteps() {
-//        do  {
-//            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesStepsDirUrl().path)
-//#if DEBUG
-//            print("Update steps, Contents", contents)
-//#endif
-//            if contents.isEmpty {
-//#if DEBUG
-//                print("Update Steps, Contents Empty")
-//#endif
-//                steps = []
-//            } else {
-//                let fileUrl = getRecipesStepsDirUrl()
-//#if DEBUG
-//                print("Update Steps, Steps url: ", fileUrl)
-//#endif
-//                for aurl in contents {
-//                    let url = fileUrl.appendingPathComponent(aurl)
-////#if DEBUG
-////                    print("Update Steps, Step url: ", url)
-////#endif
-//                    let astep = try JSONDecoder().decode(Step.self, from: try! Data(contentsOf: url))
-//                    if !steps.contains(astep) {
-//                        steps.append(astep)
-//                    }
-//                }
-//            }
-//        } catch {
-//#if DEBUG
-//            print("not able to read steps")
-//#endif
-//            self.steps = []
-//        }
-//    }
     
     fileprivate func deleteStepInStorage(step: Step) {
         let stepsDir = getRecipesStepsDirUrl()
@@ -127,3 +87,5 @@ class StepList: ObservableObject {
         }
     }
 }
+
+

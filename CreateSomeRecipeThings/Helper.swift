@@ -83,10 +83,6 @@ func getRecipesStepsDirUrl() -> URL {
     return stepsUrl
 }
 
-
-
-
-
 func getRecipesImagesDirUrl() -> URL {
     let url = getReczipesFolderUrl()
     let imagesUrl = url.appendingPathComponent(recipeImagesFolderName)
