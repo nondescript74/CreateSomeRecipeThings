@@ -23,18 +23,15 @@ struct AddAInstructionView: View {
         }
         
         Button("Add") {
-            if aiName.isEmpty { return }
             let newInstruction = AnalyzedInstruction(name: aiName, steps: stepsList.steps)
             aiList.save(newInstruction)
-        }
+        }.disabled(aiName.isEmpty)
         
         Button("Remove") {
-            if aiName.isEmpty { return }
             let aiToRemove = aiList.instructions.first { $0.name == aiName }
             if aiToRemove == nil { return }
             aiList.remove(aiToRemove!)
-
-        }
+        }.disabled(aiName.isEmpty)
     }
 }
 

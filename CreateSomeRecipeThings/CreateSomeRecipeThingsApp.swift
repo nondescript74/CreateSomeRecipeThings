@@ -14,6 +14,9 @@ struct CreateSomeRecipeThingsApp: App {
             ApplicationView()
                 .environmentObject(StepsList())
                 .environmentObject(AnalyzedInstructionList())
+                .environmentObject(ARecipesList())
+                .environmentObject(SelectedIngredientsList())
+                .environmentObject(SelectedEquipmentList())
         }
     }
 }

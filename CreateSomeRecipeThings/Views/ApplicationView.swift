@@ -11,12 +11,13 @@ struct ApplicationView: View {
     // MARK: - Environment Variables
     @EnvironmentObject var stepsList: StepsList
     @EnvironmentObject var aiList: AnalyzedInstructionList
+    @EnvironmentObject var recipesList: ARecipesList
 
     // MARK: - Properties
     fileprivate enum tabs: String {
         case steps = "Steps"
-        case ai = "AI"
-        case picture = "Pic"
+        case ai = "Instructions"
+        case recipes = "Recipes"
     }
     var body: some View {
         TabView {
@@ -28,8 +29,13 @@ struct ApplicationView: View {
                 Image(uiImage: UIImage(systemName: "square.and.arrow.up.circle")!)
                 Text(tabs.ai.rawValue)
             }
+            ARecipesManagementView().tabItem {
+                Image(uiImage: UIImage(systemName: "square.and.arrow.up.circle.fill")!)
+                Text(tabs.recipes.rawValue)
+            }
             .environmentObject(stepsList)
             .environmentObject(aiList)
+            .environmentObject(recipesList)
         }
     }
 }
@@ -38,4 +44,5 @@ struct ApplicationView: View {
     ApplicationView()
         .environmentObject(StepsList())
         .environmentObject(AnalyzedInstructionList())
+        .environmentObject(ARecipesList())
 }

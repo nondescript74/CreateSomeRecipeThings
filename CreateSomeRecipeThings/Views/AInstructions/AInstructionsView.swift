@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AInstructionsView: View {
     @EnvironmentObject var aiList: AnalyzedInstructionList
+    
     var body: some View {
         VStack {
             Text("There are " + aiList.instructions.count.description + " instructions")
@@ -21,5 +22,5 @@ struct AInstructionsView: View {
 }
 
 #Preview {
-    AInstructionsView()
+    AInstructionsView().environmentObject(AnalyzedInstructionList())
 }

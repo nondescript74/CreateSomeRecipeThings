@@ -64,27 +64,45 @@ final class AnalyzedInstructionList: ObservableObject {
     }
     
     func remove(_ instruction: AnalyzedInstruction) {
-        self.instructions.removeAll(where: { $0.id == instruction.id })
-        deleteAnalyInstrInStorage(instruction: instruction)
-#if DEBUG
-        print("AIList Removed AInstr: ", self.instructions)
-#endif
+        if let _ = self.instructions.firstIndex(of: instruction) {
+            self.instructions.removeAll(where: { $0.id == instruction.id })
+            deleteAnalyInstrInStorage(instruction: instruction)
+    #if DEBUG
+            print("AIList Removed AInstr: ", self.instructions)
+    #endif
+        }
     }
     
     fileprivate func deleteAnalyInstrInStorage(instruction: AnalyzedInstruction) {
         let aiDir = getRecipesAIDirUrl()
         let aiFileUrl = aiDir.appendingPathComponent(instruction.name.replacingOccurrences(of: " ", with: "_").appending(".json"))
         do {
-            let data = try Data(contentsOf: aiFileUrl)
-            try data.write(to: aiFileUrl, options: .atomic)
-            try FileManager.default.removeItem(at: aiFileUrl)
+            let contents = try FileManager.default.contentsOfDirectory(atPath: getRecipesAIDirUrl().path)
+            if contents.contains(aiFileUrl.lastPathComponent) {
 #if DEBUG
-            print("AIList Deleted analyzed instruction from aiurl: \(aiFileUrl)")
+                print("AIList Found analyzed instruction in aiurl: \(aiFileUrl)")
 #endif
+                do {
+                    let data = try Data(contentsOf: aiFileUrl)
+                    try data.write(to: aiFileUrl, options: .atomic)
+                    try FileManager.default.removeItem(at: aiFileUrl)
+#if DEBUG
+                    print("AIList Deleted analyzed instruction from aiurl: \(aiFileUrl)")
+#endif
+                } catch {
+                    #if DEBUG
+                    print("AIList Error deleting AnalyzedInstruction: \(error)")
+                    #endif
+                }
+            } else {
+#if DEBUG
+                print("AIList No analyzed instruction found at aiurl: \(aiFileUrl)")
+#endif
+            }
         } catch {
             #if DEBUG
-            print("AIList Error deleting AnalyzedInstruction: \(error)")
-            #endif
+            print("AIList Error getting AnalyzedInstructions contents: \(error)")
+#endif
         }
     }
     
