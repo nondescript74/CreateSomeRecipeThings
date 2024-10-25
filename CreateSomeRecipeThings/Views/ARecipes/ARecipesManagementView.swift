@@ -13,19 +13,15 @@ struct ARecipesManagementView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                NavigationLink {
-                    AddARecipeView()
-                } label: {
-                    Text("Add Recipe")
-                }
-                
-                NavigationLink {
-                    RecipesView()
-                } label: {
-                    Text("Show Recipes")
-                }.disabled(recipesList.userRecipes.isEmpty)
+                RecipesView()
             }
-            .padding()
+            
+            NavigationLink {
+                AddARecipeView()
+            } label: {
+                Text("Add Recipe")
+            }
+            
         }.environmentObject(recipesList)
     }
 }

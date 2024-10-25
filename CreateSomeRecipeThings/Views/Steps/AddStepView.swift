@@ -22,12 +22,12 @@ struct AddStepView: View {
 
         }
         
-        Button("Add") {
+        Button("Add Step") {
             let newStep = Step(number: stepsList.getNextStepIDToUse(), step: stepName, ingredients: [], equipment: [], recipeUUID: UUID())
             stepsList.saveStep(step: newStep)
         }
         
-        Button("Remove") {
+        Button("Remove Step") {
             let stepToRemove = stepsList.steps.first { $0.step == stepName }
             stepsList.deleteStep(step: stepToRemove!)
         }

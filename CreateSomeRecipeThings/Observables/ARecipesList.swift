@@ -55,7 +55,7 @@ class ARecipesList: ObservableObject {
     }
     
 
-    func addRecipe(_ arecipe: Arecipe) {
+    func addRecipe(arecipe: Arecipe) {
         if userRecipes.contains(where: { $0.id == arecipe.id }) {
 #if DEBUG
             print("Recipe already exists, removing it")
@@ -81,7 +81,7 @@ class ARecipesList: ObservableObject {
         }
     }
  
-    func removeRecipe(_ arecipe: Arecipe) {
+    func removeRecipe(arecipe: Arecipe) {
         self.userRecipes.removeAll(where: { $0.id == arecipe.id })
         self.currentRecipe = sampleRecipe
 #if DEBUG

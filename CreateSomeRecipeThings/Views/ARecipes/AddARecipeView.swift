@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AddARecipeView: View {
     @EnvironmentObject var aRecipeList: ARecipesList
-    @State private var recipeName: String = ""
+    @State private var recipeName: String = "This should be the recipe name"
+    @State private var recipeSummary: String = "This should be the summary"
 
     var body: some View {
         Text("Create a new recipe")
@@ -19,17 +20,19 @@ struct AddARecipeView: View {
             TextField("Recipe Name", text: $recipeName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
+        }
+        VStack {
+            TextField("Add a step", text: $recipeSummary)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
         }
         
         Button("Add") {
-//            let newStep = Step(number: stepsList.getNextStepIDToUse(), step: stepName, ingredients: [], equipment: [], recipeUUID: UUID())
-//            stepsList.saveStep(step: newStep)
+            aRecipeList.addRecipe(arecipe: Arecipe(extendedIngredients: [], title: recipeName, summary: recipeSummary, cuisines: [], dishTypes: [], diets: [], occasions: [], analyzedInstructions: [], recipeUUID: UUID()))
         }
         
         Button("Remove") {
-//            let stepToRemove = stepsList.steps.first { $0.step == stepName }
-//            stepsList.deleteStep(step: stepToRemove!)
+            aRecipeList.removeRecipe(arecipe: aRecipeList.currentRecipe)    
         }
     }
 }

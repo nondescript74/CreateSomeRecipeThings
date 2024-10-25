@@ -21,6 +21,10 @@ struct ApplicationView: View {
     }
     var body: some View {
         TabView {
+            ARecipesManagementView().tabItem {
+                Image(uiImage: UIImage(systemName: "square.and.arrow.up.circle.fill")!)
+                Text(tabs.recipes.rawValue)
+            }
             StepsManagementView().tabItem {
                 Image(uiImage: UIImage(systemName: "square.and.arrow.down")!)
                 Text(tabs.steps.rawValue)
@@ -28,10 +32,6 @@ struct ApplicationView: View {
             AInstructionsManagementView().tabItem {
                 Image(uiImage: UIImage(systemName: "square.and.arrow.up.circle")!)
                 Text(tabs.ai.rawValue)
-            }
-            ARecipesManagementView().tabItem {
-                Image(uiImage: UIImage(systemName: "square.and.arrow.up.circle.fill")!)
-                Text(tabs.recipes.rawValue)
             }
             .environmentObject(stepsList)
             .environmentObject(aiList)

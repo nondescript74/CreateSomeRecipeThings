@@ -13,19 +13,13 @@ struct StepsManagementView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                NavigationLink {
-                    AddStepView()
-                } label: {
-                    Text("Add Step")
-                }
-                
-                NavigationLink {
-                    StepsView()
-                } label: {
-                    Text("Show Steps")
-                }.disabled(stepsList.steps.isEmpty)
+                StepsView()
             }
-            .padding()
+            NavigationLink {
+                AddStepView()
+            } label: {
+                Text("Add a step")
+            }
         }.environmentObject(stepsList)
     }
 }
