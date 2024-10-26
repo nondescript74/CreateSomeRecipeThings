@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ARecipesManagementView: View {
+    @StateObject var ai = AnalyzedInstructionList()
     @StateObject var recipesList = ARecipesList()
     
     var body: some View {
         NavigationStack {
-            VStack {
-                RecipesView()
-            }
+            
+            RecipesView()
             
             NavigationLink {
                 AddARecipeView()
@@ -22,10 +22,20 @@ struct ARecipesManagementView: View {
                 Text("Add Recipe")
             }
             
-        }.environmentObject(recipesList)
+            NavigationLink {
+                AddAInstrToRecipeView(selectedRecipe: sampleRecipe, ai: sampleAnalyzedInstruction)
+            } label: {
+                Text("Add Instructions")
+            }
+            
+        }
+        .environmentObject(recipesList)
+        .environmentObject(ai)
     }
 }
 
 #Preview {
-    ARecipesManagementView().environmentObject(ARecipesList())
+    ARecipesManagementView()
+        .environmentObject(ARecipesList())
+        .environmentObject(AnalyzedInstructionList())
 }

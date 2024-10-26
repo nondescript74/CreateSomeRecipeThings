@@ -7,21 +7,12 @@
 
 import Foundation
 
-let sampleRecipe = Arecipe(vegetarian: .none, vegan: .none, glutenFree: .none, dairyFree: .none, veryHealthy: .none, cheap: .none, veryPopular: .none, sustainable: .none, weightWatcherSmartPoints: .none, gaps: .none, lowFodmap: .none, preparationMinutes: .none, cookingMinutes: .none, aggregateLikes: .none, spoonacularScore: .none, healthScore: .none, pricePerServing: .none, extendedIngredients: [], id: .none, title: "A Sample Recipe", readyInMinutes: .none, sourceURL: .none, image: .none, imageType: .none, summary: "Please create a sample recipe", cuisines: [], dishTypes: [], diets: [], occasions: [], instructions: "No instructions yet", analyzedInstructions: [], sourceName: "Carol Premji", creditsText: "Carol Premji", originalID: .none, recipeUUID: UUID())
+let sampleRecipe: Arecipe = Arecipe(vegetarian: .none, vegan: .none, glutenFree: .none, dairyFree: .none, veryHealthy: .none, cheap: .none, veryPopular: .none, sustainable: .none, weightWatcherSmartPoints: .none, gaps: .none, lowFodmap: .none, preparationMinutes: .none, cookingMinutes: .none, aggregateLikes: .none, spoonacularScore: .none, healthScore: .none, pricePerServing: .none, extendedIngredients: [], id: .none, title: "A Sample Recipe", readyInMinutes: .none, sourceURL: .none, image: .none, imageType: .none, summary: "Please create a sample recipe", cuisines: [], dishTypes: [], diets: [], occasions: [], instructions: "No instructions yet", analyzedInstructions: [], sourceName: "Carol Premji", creditsText: "Carol Premji", originalID: .none, recipeUUID: UUID())
 
-func getDocuDirUrl() -> URL {
-    var myReturn:URL
-    do {
-        let myDocuDirUrl = try FileManager.default.url(for: .documentDirectory,
-                                                       in: .userDomainMask,
-                                                       appropriateFor: nil,
-                                                       create: false)
-        myReturn = myDocuDirUrl
-    } catch {
-        fatalError("no user documents directory")
-    }
-    return myReturn
-}
+let sampleStep: Step = Step(number: Int.random(in: 1...10000), step: "This is the step text", ingredients: [Ent(id: Int.random(in: 1...10000), name: "Ingredient 1 name", localizedName: "Localized Ingredient 1 Name", image: "Image url string")], equipment: [Ent(id: Int.random(in: 1...10000), name: "This is the equipment name", localizedName: "This is the localized equipment name", image: "")], recipeUUID: UUID())
+
+
+let sampleAnalyzedInstruction: AnalyzedInstruction = AnalyzedInstruction(name: "Sample Instruction", steps: [sampleStep], id: UUID())
 
 func getReczipesFolderUrl() -> URL {
     var myReturn:URL
