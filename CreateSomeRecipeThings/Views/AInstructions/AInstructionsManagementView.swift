@@ -8,28 +8,80 @@
 import SwiftUI
 
 struct AInstructionsManagementView: View {
-    @StateObject var aiList = AnalyzedInstructionList()
+    @EnvironmentObject var aiList: AnalyzedInstructionList
+    @EnvironmentObject var steps: StepsList
     
     var body: some View {
         NavigationStack {
-            VStack {
+            Section {
+                AInstructionsView()
+            } header: {
+                VStack {
+                    Text("Manage Instructions")
+                        .font(.headline)
+                }
+            }
+            Divider()
+            
+            Section {
                 NavigationLink {
                     AddAInstructionView()
                 } label: {
                     Text("Add Instruction")
                 }
-                
-                NavigationLink {
-                    AInstructionsView()
-                } label: {
-                    Text("Show Instructions")
-                }.disabled(aiList.instructions.isEmpty)
             }
-            .padding()
+            Divider()
+            Section {
+                
+
+            }
         }.environmentObject(aiList)
     }
 }
 
 #Preview {
-    AInstructionsManagementView().environmentObject(AnalyzedInstructionList())
+    AInstructionsManagementView()
+        .environmentObject(AnalyzedInstructionList())
+        .environmentObject(StepsList())
 }
+/*
+ struct ARecipesManagementView: View {
+     @StateObject var ai = AnalyzedInstructionList()
+     @StateObject var recipesList = ARecipesList()
+     
+     var body: some View {
+         NavigationStack {
+             Section {
+                 RecipesView()
+             } header: {
+                 VStack {
+                     Text("Manage Recipes")
+                         .font(.headline)
+                 }
+             }
+             Divider()
+             
+             Section {
+                 NavigationLink {
+                     AddAInstrToRecipeView(selectedRecipe: sampleRecipe, ai: sampleAnalyzedInstruction)
+                 } label: {
+                     Text("Add Instructions")
+                 }
+             }.padding()
+             Divider()
+
+             Section {
+                 NavigationLink {
+                     AddARecipeView()
+                 } label: {
+                     Text("Add Recipe")
+                 }
+             }
+             
+         }
+         .environmentObject(recipesList)
+         .environmentObject(ai)
+     }
+ }
+
+ */

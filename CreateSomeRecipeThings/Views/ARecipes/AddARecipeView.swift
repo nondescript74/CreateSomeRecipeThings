@@ -22,17 +22,20 @@ struct AddARecipeView: View {
                 .padding()
         }
         VStack {
-            TextField("Add a step", text: $recipeSummary)
+            TextField("Add a summary", text: $recipeSummary)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
         }
         
         Button("Add") {
-            aRecipeList.addRecipe(arecipe: Arecipe(extendedIngredients: [], title: recipeName, summary: recipeSummary, cuisines: [], dishTypes: [], diets: [], occasions: [], analyzedInstructions: [], recipeUUID: UUID()))
+            aRecipeList.addRecipe(arecipe: Arecipe(extendedIngredients: [], title: recipeName, summary: recipeSummary, cuisines: [], dishTypes: [], diets: [], occasions: [], analyzedInstructions: [], recipeUUID: UUID().uuidString))
         }
         
-        Button("Remove") {
-            aRecipeList.removeRecipe(arecipe: aRecipeList.currentRecipe)    
+        Button("Remove current recipe") {
+            if aRecipeList.currentRecipe == sampleRecipe {
+                return
+            }
+            aRecipeList.removeRecipe(arecipe: aRecipeList.currentRecipe)
         }
     }
 }

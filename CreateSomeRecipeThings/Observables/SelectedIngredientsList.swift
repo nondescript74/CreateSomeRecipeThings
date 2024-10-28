@@ -11,11 +11,15 @@ final class SelectedIngredientsList: ObservableObject {
     
     // MARK: - Publisher
     @Published var selectedIngredients: [Ingredient]
+    @Published private(set) var shippedIngredients: [Ingredient]
     
     init() {
         self.selectedIngredients = []
+        self.shippedIngredients = [
+            Ingredient(id: 1, name: "Eggs", localizedName: "Eggs", image: "" )]
 #if DEBUG
         print("Selected Ingredients Initialized:", self.selectedIngredients)
+        print("Shipped Ingredients loaded: ", self.shippedIngredients.count.description, "\n")
 #endif
     }
     

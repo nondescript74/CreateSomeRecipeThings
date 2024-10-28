@@ -13,19 +13,31 @@ struct ARecipesManagementView: View {
     
     var body: some View {
         NavigationStack {
-            
-            RecipesView()
-            
-            NavigationLink {
-                AddARecipeView()
-            } label: {
-                Text("Add Recipe")
+            Section {
+                RecipesView()
+            } header: {
+                VStack {
+                    Text("Manage Recipes")
+                        .font(.headline)
+                }
             }
+            Divider()
             
-            NavigationLink {
-                AddAInstrToRecipeView(selectedRecipe: sampleRecipe, ai: sampleAnalyzedInstruction)
-            } label: {
-                Text("Add Instructions")
+            Section {
+                NavigationLink {
+                    AddAInstrToRecipeView(selectedRecipe: sampleRecipe, ai: sampleAnalyzedInstruction)
+                } label: {
+                    Text("Add Instructions")
+                }
+            }.padding()
+            Divider()
+
+            Section {
+                NavigationLink {
+                    AddARecipeView()
+                } label: {
+                    Text("Add Recipe")
+                }
             }
             
         }

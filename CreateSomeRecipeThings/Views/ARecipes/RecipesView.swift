@@ -12,13 +12,13 @@ struct RecipesView: View {
     var body: some View {
         VStack {
             Text("There are " + recipesList.userRecipes.count.description + " recipes")
-                .font(.title)
+                .font(.subheadline).padding()
             ForEach(recipesList.userRecipes, id: \.self.recipeUUID) { arecipe in
                 Text(arecipe.title)
                 ForEach(arecipe.analyzedInstructions, id: \.self) { ai in
                     Text(ai!.name)
                 }.disabled(arecipe.analyzedInstructions.isEmpty)
-            }
+            }.disabled(recipesList.userRecipes.isEmpty)
         }
     }
 }

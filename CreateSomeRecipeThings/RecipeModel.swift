@@ -73,7 +73,7 @@ struct Arecipe: Codable, Identifiable, Hashable {
     var instructions: String?
     var analyzedInstructions: [AnalyzedInstruction?]
     var sourceName, creditsText, originalID: String?
-    var recipeUUID: UUID
+    var recipeUUID: String
 }
 
 // MARK: - AnalyzedInstruction
@@ -100,7 +100,7 @@ struct Step: Codable, Hashable, Comparable {
     var number: Int
     var step: String
     var ingredients, equipment: [Ent]
-    var recipeUUID: UUID
+    var recipeUUID: String
 }
 
 // MARK: - Ent

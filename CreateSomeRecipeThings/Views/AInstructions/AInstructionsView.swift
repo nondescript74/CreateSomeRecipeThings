@@ -16,7 +16,7 @@ struct AInstructionsView: View {
                 .font(.title)
             ForEach(aiList.instructions, id: \.self) { ai in
                 Text(ai.name + ": " + ai.steps.count.description + " steps")
-            }
+            }.disabled(aiList.instructions.isEmpty)
         }
     }
 }

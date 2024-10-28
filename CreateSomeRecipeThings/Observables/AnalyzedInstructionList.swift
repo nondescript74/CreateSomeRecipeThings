@@ -106,5 +106,12 @@ final class AnalyzedInstructionList: ObservableObject {
         }
     }
     
+    func getAnalyzedInstructionList() -> [AnalyzedInstruction] {
+        let fileOfAI = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("analyzedInstructionList.json")
+        let data = try? Data(contentsOf: fileOfAI)
+        let analyzedInstructionList: [AnalyzedInstruction] = try! JSONDecoder().decode([AnalyzedInstruction].self, from: data!)
+        return analyzedInstructionList
+    }
+    
 
 }

@@ -23,7 +23,7 @@ struct AddStepView: View {
         }
         
         Button("Add Step") {
-            let newStep = Step(number: stepsList.getNextStepIDToUse(), step: stepName, ingredients: [], equipment: [], recipeUUID: UUID())
+            let newStep = Step(number: stepsList.getNextStepIDToUse(), step: stepName, ingredients: [], equipment: [], recipeUUID: UUID().uuidString)
             stepsList.saveStep(step: newStep)
         }
         
