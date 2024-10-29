@@ -56,9 +56,10 @@ class ARecipesList: ObservableObject {
     
 
     func addRecipe(arecipe: Arecipe) {
-        if userRecipes.contains(where: { $0.id == arecipe.id }) {
+        if userRecipes.contains(where: { $0.recipeUUID == arecipe.recipeUUID }) {
 #if DEBUG
-            print("Recipe already exists, removing it")
+            print("Recipe already exists, removing it", "userRecipes: ", userRecipes.count.description)
+            print("Removing: ", arecipe.title, arecipe.recipeUUID)
 #endif
             self.userRecipes.removeAll(where: { $0.id == arecipe.id })
         }
@@ -66,6 +67,7 @@ class ARecipesList: ObservableObject {
         self.currentRecipe = arecipe
 #if DEBUG
         print("Added recipe: ", arecipe.title)
+        print("Current recipe: ", currentRecipe.title)
 #endif
         
         let arecipesUrl = getReczipesFolderUrl().appendingPathComponent("Arecipes").appendingPathComponent("\(currentRecipe.title).json")
@@ -82,7 +84,7 @@ class ARecipesList: ObservableObject {
     }
  
     func removeRecipe(arecipe: Arecipe) {
-        self.userRecipes.removeAll(where: { $0.id == arecipe.id })
+        self.userRecipes.removeAll(where: { $0.recipeUUID == arecipe.recipeUUID })
         self.currentRecipe = sampleRecipe
 #if DEBUG
         print("Removed recipe: ", arecipe.title)

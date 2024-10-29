@@ -29,6 +29,9 @@ struct AddARecipeView: View {
         
         Button("Add") {
             aRecipeList.addRecipe(arecipe: Arecipe(extendedIngredients: [], title: recipeName, summary: recipeSummary, cuisines: [], dishTypes: [], diets: [], occasions: [], analyzedInstructions: [], recipeUUID: UUID().uuidString))
+#if DEBUG
+            print(aRecipeList.currentRecipe.recipeUUID)
+#endif  
         }
         
         Button("Remove current recipe") {
