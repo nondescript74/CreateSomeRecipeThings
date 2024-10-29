@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct AInstructionsManagementView: View {
+    @EnvironmentObject var recipesList: ARecipesList
     @EnvironmentObject var aiList: AnalyzedInstructionList
+    @EnvironmentObject var ingredients: SelectedIngredientsList
+    @EnvironmentObject var equipment: SelectedEquipmentList
     @EnvironmentObject var steps: StepsList
     
     var body: some View {
@@ -19,6 +22,7 @@ struct AInstructionsManagementView: View {
                 VStack {
                     Text("Manage Instructions")
                         .font(.headline)
+                    Text("The current recipe is \(recipesList.currentRecipe.title)")
                 }
             }
             Divider()
@@ -27,15 +31,15 @@ struct AInstructionsManagementView: View {
                 NavigationLink {
                     AddAInstructionView()
                 } label: {
-                    Text("Add Instruction")
+                    Text("Add/Remove Instruction")
                 }
             }
-            Divider()
-            Section {
-                
-
-            }
-        }.environmentObject(aiList)
+        }
+        .environmentObject(recipesList)
+        .environmentObject(aiList)
+        .environmentObject(ingredients)
+        .environmentObject(equipment)
+        .environmentObject(steps)
     }
 }
 
@@ -43,6 +47,9 @@ struct AInstructionsManagementView: View {
     AInstructionsManagementView()
         .environmentObject(AnalyzedInstructionList())
         .environmentObject(StepsList())
+        .environmentObject(ARecipesList())
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(SelectedIngredientsList())
 }
 /*
  struct ARecipesManagementView: View {

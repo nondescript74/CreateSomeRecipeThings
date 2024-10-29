@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct ARecipesManagementView: View {
-    @StateObject var ai = AnalyzedInstructionList()
-    @StateObject var recipesList = ARecipesList()
+    @EnvironmentObject var recipesList: ARecipesList
+    @EnvironmentObject var aiList: AnalyzedInstructionList
+    @EnvironmentObject var ingredients: SelectedIngredientsList
+    @EnvironmentObject var equipment: SelectedEquipmentList
+    @EnvironmentObject var steps: StepsList
     
     var body: some View {
         NavigationStack {
@@ -22,27 +25,19 @@ struct ARecipesManagementView: View {
                 }
             }
             Divider()
-            
-            Section {
-                NavigationLink {
-                    AddAInstrToRecipeView(selectedRecipe: sampleRecipe, ai: sampleAnalyzedInstruction)
-                } label: {
-                    Text("Add Instructions")
-                }
-            }.padding()
-            Divider()
-
             Section {
                 NavigationLink {
                     AddARecipeView()
                 } label: {
-                    Text("Add Recipe")
+                    Text("Add/Remove Recipe")
                 }
             }
-            
         }
         .environmentObject(recipesList)
-        .environmentObject(ai)
+        .environmentObject(aiList)
+        .environmentObject(ingredients)
+        .environmentObject(equipment)
+        .environmentObject(steps)
     }
 }
 
@@ -50,4 +45,7 @@ struct ARecipesManagementView: View {
     ARecipesManagementView()
         .environmentObject(ARecipesList())
         .environmentObject(AnalyzedInstructionList())
+        .environmentObject(SelectedIngredientsList())
+        .environmentObject(SelectedEquipmentList())
+        .environmentObject(StepsList())
 }

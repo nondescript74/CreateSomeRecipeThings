@@ -39,17 +39,21 @@ struct AddAInstructionView: View {
             recipesList.currentRecipe.analyzedInstructions.removeAll { $0?.name == aiName }
         }.disabled(aiName.isEmpty)
         
-        List(recipesList.userRecipes, id: \.self, selection: $selection) { arecipe in
-            Text(arecipe.title).onTapGesture {
-                recipesList.currentRecipe = arecipe
-#if DEBUG
-                print("Selected \(arecipe.title)")
-#endif
+        VStack {
+            Text("Change the current recipe by selecting from below ")
+            List(recipesList.userRecipes, id: \.self, selection: $selection) { arecipe in
+                Text(arecipe.title).onTapGesture {
+                    recipesList.setCurrentRecipe(arecipe: arecipe)
+                }
             }
+            
         }
     }
 }
 
 #Preview {
-    AddAInstructionView().environmentObject(AnalyzedInstructionList())
+    AddAInstructionView()
+        .environmentObject(AnalyzedInstructionList())
+        .environmentObject(ARecipesList())
+        .environmentObject(StepsList())
 }

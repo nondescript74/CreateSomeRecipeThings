@@ -35,14 +35,12 @@ struct AddARecipeView: View {
         }
         
         Button("Remove current recipe") {
-            if aRecipeList.currentRecipe == sampleRecipe {
-                return
-            }
             aRecipeList.removeRecipe(arecipe: aRecipeList.currentRecipe)
         }
     }
 }
-
+#if DEBUG
 #Preview {
     AddARecipeView().environmentObject(ARecipesList())
 }
+#endif

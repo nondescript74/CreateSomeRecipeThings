@@ -14,7 +14,12 @@ struct RecipesView: View {
             Text("There are " + recipesList.userRecipes.count.description + " recipes")
                 .font(.subheadline).padding()
             ForEach(recipesList.userRecipes, id: \.self.recipeUUID) { arecipe in
-                Text(arecipe.title)
+                Text(arecipe.title).onTapGesture {
+                    recipesList.setCurrentRecipe(arecipe: arecipe)
+#if DEBUG
+                    print("Recipe tapped, current is now: \(recipesList.currentRecipe.title)")
+#endif
+                }
                 ForEach(arecipe.analyzedInstructions, id: \.self) { ai in
                     Text(ai!.name)
                 }.disabled(arecipe.analyzedInstructions.isEmpty)

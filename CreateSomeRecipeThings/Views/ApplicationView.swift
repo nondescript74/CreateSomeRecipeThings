@@ -49,29 +49,12 @@ struct ApplicationView: View {
                 Image(uiImage: UIImage(systemName: images.ingredients.rawValue)!)
                 Text(tabs.ingredients.rawValue)
             }
-            
-            
-            
-//            DisplayARecipesShippedView().tabItem {
-//                Image(uiImage: UIImage(systemName: images.recipes.rawValue)!)
-//                Text(tabs.recipes.rawValue)
-//            }
-//            
-//            DisplayIngredientNamesView().tabItem {
-//                Image(uiImage: UIImage(systemName: images.ingredients.rawValue)!)
-//                Text(tabs.ingredients.rawValue)
-//            }
-//            
-//            DisplayEquipmentNamesView().tabItem {
-//                Image(uiImage: UIImage(systemName: images.equipment.rawValue)!)
-//                Text(tabs.equipment.rawValue)
-//            }
-            .environmentObject(stepsList)
-            .environmentObject(aiList)
-            .environmentObject(recipesList)
-            .environmentObject(ingredientsList)
-            .environmentObject(selectedEquipmentList)
         }
+        .environmentObject(stepsList)
+        .environmentObject(aiList)
+        .environmentObject(recipesList)
+        .environmentObject(ingredientsList)
+        .environmentObject(selectedEquipmentList)
     }
 }
 
